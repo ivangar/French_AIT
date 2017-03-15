@@ -26,13 +26,10 @@ if(isset($_POST['logout_submitted']))
 
 
 //Create a Programs instances
-$EnglishProgram = new Program();
 $FrenchProgram = new Program();
 
 //----------------DEFINE PERMANENT VARIABLES FOR THIS PROGRAM-----------------------//
 
-$program_id = 'AIT_01';   //Program ID
-$course_number = 56996;   //FMOQ API course number to grant credits (use 54343 for testing)
 $program_id_fr = 'AIT_01_FR';   //Program ID
 $pretestId = 'AIT_Pre_01';  //program_section_id that belongs to the specific program pretest from program_sections table
 $posttestId = 'AIT_Post_01';  //program_section_id that belongs to the specific program post test from program_sections table
@@ -52,9 +49,7 @@ $program_completed = false;	  //This boolean value is used to allow to display t
 $sections_status = array();  //This array will hold the state of each program section whenever the page is loaded and reloaded
 $no_sections_completed = 0;
 
-$EnglishProgram->Set_Program($program_id, $pretestId, $posttestId, $forum_id, $evaluation_id, $certificate_id);
 $FrenchProgram->Set_Program($program_id_fr, $pretestId, $posttestId, $forum_id, $evaluation_id_fr, $certificate_id_fr);
-$FrenchProgram->Set_FMOQ_Course_no($course_number);
 
 //Check that a record having this program ID for this doctor ID exists in doctor_profiles table. 
 //If not Insert a new record with the certificate id defined, program_status = 0, date of completion = NULL and time required Null
@@ -63,16 +58,6 @@ $FrenchProgram->Set_FMOQ_Course_no($course_number);
 if(!$FrenchProgram->CheckProfileExists()){
 
 	$FrenchProgram->CreateProfile(); //Create empty French profile
-
-	//if English profile exists and status is completed, replicate profile for French
-	if($EnglishProgram->CheckProfileExists()){
-		if($EnglishProgram->CheckProgramStatus()){
-			$date_of_completion = $EnglishProgram->GetDateOfCompletion();
-			$FrenchProgram->ReplicateProfile($date_of_completion);
-			$program_completed = true;
-			$no_sections_completed = $no_sections;
-		}
-	}
 }
 
 $program_status = $FrenchProgram->CheckProgramStatus();  //First check in the doctor profile to see if the program status is completed.
@@ -89,23 +74,12 @@ if(!$program_status){
 
 	//if all $no_sections sections are completed update profile with completed
 	if($FrenchProgram->CheckSectionsCompleted()){
-		$date_of_completion = $EnglishProgram->GetDateOfCompletion();
 		$FrenchProgram->UpdateProfile($date_of_completion);  //call UpdateProfile to insert program_status = 1, date of completion = NOW()
 		$program_completed = true;
 		$no_sections_completed = $no_sections;
-		$curl_reponse = $FrenchProgram->SendFMOQ_Credits($fgmembersite->UserEmail(), $fgmembersite->GetMatricule());
 	}
 }
 
-//Once the evaluation is submitted Register to FMOQ
-
-if($sections_status['evaluation']){
-		
-	if(!$FrenchProgram->GetEvaluationRegistration()){
-		$curl_reponse = $FrenchProgram->SubmitFMOQ_Evaluation($fgmembersite->UserEmail(), $fgmembersite->GetMatricule());
-	}
-	
-}
 
 //This will display program progress status
 if($no_sections_completed !== $no_sections){
@@ -122,7 +96,6 @@ if($no_sections_completed !== $no_sections){
 if( !isset($_SESSION['arrow_box'])){ $_SESSION['arrow_box'] = true; }
 
 // close connection 
-mysqli_close($EnglishProgram->con);
 mysqli_close($FrenchProgram->con);
 
 ?>
@@ -152,11 +125,6 @@ mysqli_close($FrenchProgram->con);
 <script src="<?= SCRIPT_ROOT ?>/js/jquery.blockUI.js"></script>
 <script type="text/javascript">
 	var showTip = <?php if($_SESSION['arrow_box']) {echo "true"; $_SESSION['arrow_box'] = false;} else echo "false";?>;	
-	var section_submitted = <?php if($_SESSION['section_submitted']) {echo "true"; $_SESSION['section_submitted'] = false;} else echo "false";?>;
-	var section_submitted = <?php if($_SESSION['posted']) {echo "true"; } else echo "false";?>;
-	var sections = <?php echo $no_sections; ?>;
-	if(getCookie("postTest") != "" && getCookie("postTest") != null) { postTest_state = getCookie("postTest"); document.cookie = "postTest=; expires=Thu, 01 Jan 1970 00:00:00 UTC"; section_submitted = true; } else postTest_state = null;
-	var no_sections_completed = <?php if( isset($no_sections_completed) ) echo $no_sections_completed; ?>;
 </script>
 
 <style>

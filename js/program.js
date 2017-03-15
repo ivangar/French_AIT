@@ -29,42 +29,6 @@
 		return counter;
 	};
 
-	//fire click event for the slide
-	var nextPage = function( section ) {
-		switch (section) {
-		    case "3":
-		        ( $( "span#ARslide_no" ).text() == "11" ) ? $( "#next_SCIT_section" ).click() : $( "#next_AR_slide" ).click();
-		        break;
-			case "4":
-		        ( $( "span#SCITslide_no" ).text() == "21" ) ? $( "#next_SLIT_section" ).click() : $( "#next_SCIT_slide" ).click();
-		        break;
-			case "5":
-				( $( "span#SLITslide_no" ).text() == "51" ) ? $( "#next_AFP_section" ).click() : $( "#next_SLIT_slide" ).click();
-		        break;	
-			case "6":
-				( $( "span#AFPslide_no" ).text() == "61" ) ? $( "#next_forum_section" ).click() : $( "#next_AFP_slide" ).click();
-		        break;	      
-		} 
-	};
-
-	//fire click event for the slide
-	var prevPage = function( section ) {
-		switch (section) {
-		    case "3":
-		        ( $( "span#ARslide_no" ).text() == "" ) ? $( "#prev_soutien" ).click() : $( "#prev_AR_slide" ).click();
-		        break;
-			case "4":
-		        ( $( "span#SCITslide_no" ).text() == "" ) ? $( "#prev_AR_section" ).click() : $( "#prev_SCIT_slide" ).click();
-		        break;
-			case "5":
-				( $( "span#SLITslide_no" ).text() == "" ) ? $( "#prev_SCIT_section" ).click() : $( "#prev_SLIT_slide" ).click();
-		        break;	
-			case "6":
-				( $( "span#AFPslide_no" ).text() == "" ) ? $( "#prev_SLIT_section" ).click() : $( "#prev_AFP_slide" ).click();
-		        break;	      
-		} 
-	};
-
 	function getCookie(cname) {
 	    var name = cname + "=";
 	    var ca = document.cookie.split(';');
@@ -140,36 +104,8 @@
 			}
 		});
 
-	    $("body").keydown(function(e) {
-	       if(e.keyCode == 37) { // left
-	            var hash = location.hash.replace("#", "");
-	            var section = hash.substring(3);
-	 
-	            if( section < 3 || section > 6) {
-					section = --section;
-					hash = 'tab' + section;
-	            	window.parent.showTab(hash);
-	            }
-	            else { prevPage(section);
-	            }
-	        }
-
-	        else if(e.keyCode == 39) { // right
-	            var hash = location.hash.replace("#", "");
-	            var section = hash.substring(3);
-	            
-	            if( section < 3 || section > 6) {
-					section = ++section;
-					hash = 'tab' + section;
-	            	window.parent.showTab(hash);
-	            }
-	            else { nextPage(section);
-	            }
-	        }
-	    });
-
 	    //Character limit counter for all text areas
-		$('#comment_AIT_topic_04, #comment_AIT_topic_05, #comment_AIT_topic_06, #comment_AIT_topic_07, #comment_AIT_topic_08, #comment_AIT_topic_09, #comment_AIT_topic_10, #comment_AIT_topic_11, #comment_AIT_topic_12, #comment_AIT_topic_13, #eval_q_1, #eval_q_2, #eval_q_3, #eval_q_4, #eval_q_5, #eval_q_6, #eval_q_8, #eval_q_9').keyup(function () {
+		$('#eval_q_1, #eval_q_2, #eval_q_3, #eval_q_4, #eval_q_5, #eval_q_6, #eval_q_8, #eval_q_9').keyup(function () {
 			  var max = 500;
 			  var len = $(this).val().length;
 			  var limit_indicator = '.' + $(this).attr('id');
@@ -211,30 +147,4 @@
 			}); 
 		}
 
-		if(section_submitted || (postTest_state == 'submitted') ){
-		    $.blockUI({ 
-		        message: '\<br\>Vous avez completé \<br\>\<br\>' +  no_sections_completed + ' section(s) sur 3 \<br\>\<br\>', 
-		        fadeIn: 1500, 
-		        fadeOut: 1300, 
-		        timeout: 3000, 
-		        showOverlay: false, 
-		        centerY: false, 
-		        css: { 
-		            width: '300px',
-		            height: '150px', 
-		            top:  ($(window).height() - 200) /2 + 'px', 
-		            left: ($(window).width() - 100) /2 + 'px', 
-		            border: 'none', 
-		            padding: '5px', 
-		            textAlign: 'center',
-		            font: '20px Arial,Helvetica,sans-serif',
-		            backgroundColor: '#000', 
-		            '-moz-border-radius': '10px',
-		            '-webkit-border-radius': '10px', 
-		            'border-radius': '10px',
-		            opacity: .8, 
-		            color: '#fff' 
-		        } 
-	    	}); 
-		}
 	});//end document.ready
