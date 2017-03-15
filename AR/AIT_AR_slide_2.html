@@ -11,9 +11,9 @@
     }
 
     $( "#prev_AR_slide, #next_AR_slide" ).click(function() {
-        var page = ( $(this).attr( "id" ) === "prev_AR_slide" ) ? 4 : 6;
-        $( "span.count" ).empty().html(page + "/66" );
-        (page === 6) ? $( "span#ARslide_no" ).text(page) : $( "span#ARslide_no" ).empty();
+        var page = ( $(this).attr( "id" ) === "prev_AR_slide" ) ? 3 : 5;
+        $( "span.count" ).empty().html(page + "/62" );
+        (page === 5) ? $( "span#ARslide_no" ).text(page) : $( "span#ARslide_no" ).empty();
         
         target = $(this).attr( "alt" );
         target = "../../programs/AIT/AR/" + target;

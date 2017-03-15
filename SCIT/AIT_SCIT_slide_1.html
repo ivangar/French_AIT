@@ -6,14 +6,14 @@
 
         target = $(this).attr( "alt" );
 
-        if (target === "tab4"){
+        if (target === "tab3"){
           window.parent.showTab(target);
         }
 
         else
         {
-            $( "span.count" ).empty().html("13/66" );
-            $( "span#SCITslide_no" ).text('13');
+            $( "span.count" ).empty().html("12/62" );
+            $( "span#SCITslide_no" ).text('12');
             target = "../../programs/AIT/SCIT/" + target;
 
             /* make an ajax call to retrieve next slide */
@@ -49,7 +49,7 @@
 
         </td>
          <td style="padding:0 10px 0 30px;">
-          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="tab4" id="prev_AR_section"/>
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="tab3" id="prev_AR_section"/>
         </td>
         <td style="padding: 0;">
           <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="AIT_SCIT_slide_2.html" id="next_SCIT_slide"/>

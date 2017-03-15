@@ -5,7 +5,7 @@
       var evaluationId = <?php if(isset($evaluation_id_fr)) {echo " '$evaluation_id_fr' ";} else echo ''; ?>;  //replace all section ids in the code
       var no_questions = 5;
 
-      $( "#prev_post_test_section, #next_accreditation_section" ).click(function() {
+      $( "#prev_AFP_section, #next_accreditation_section" ).click(function() {
           target = $(this).attr( "alt" );
           window.parent.showTab(target);
       });
@@ -475,10 +475,8 @@
 <?php }//Close else tag ?>
 </td>
     <td style="padding:0 10px 0 10px;">
-      <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="tab9" id="prev_post_test_section"/>
+      <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="tab6" id="prev_AFP_section"/>
     </td>
-    <td style="padding: 0;">
-      <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="tab11" id="next_accreditation_section"/>
-    </td>
+    
   </tr>
 </table>

@@ -2,8 +2,8 @@
     $(document).ready(function () {
 
     $( "#prev_SLIT_slide, #next_SLIT_slide" ).click(function() {
-        var page = ( $(this).attr( "id" ) === "prev_SLIT_slide" ) ? 22 : 24;
-        $( "span.count" ).empty().html(page + "/66" );
+        var page = ( $(this).attr( "id" ) === "prev_SLIT_slide" ) ? 21 : 23;
+        $( "span.count" ).empty().html(page + "/62" );
         (page === 25) ? $( "span#SLITslide_no" ).text(page) : $( "span#SLITslide_no" ).empty();
         
         target = $(this).attr( "alt" );

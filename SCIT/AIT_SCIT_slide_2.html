@@ -2,8 +2,8 @@
     $(document).ready(function () {
 
     $( "#prev_SCIT_slide, #next_SCIT_slide" ).click(function() {
-        var page = ( $(this).attr( "id" ) === "prev_SCIT_slide" ) ? 12 : 14;
-        $( "span.count" ).empty().html(page + "/66" );
+        var page = ( $(this).attr( "id" ) === "prev_SCIT_slide" ) ? 11 : 13;
+        $( "span.count" ).empty().html(page + "/62" );
         (page === 15) ? $( "span#SCITslide_no" ).text(page) : $( "span#SCITslide_no" ).empty();
 
         target = $(this).attr( "alt" );

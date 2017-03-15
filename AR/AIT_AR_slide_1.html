@@ -10,19 +10,19 @@
           var height = 'innerHeight';
     }
 
-    $( "#prev_pretest, #next_AR_slide" ).click(function() {
+    $( "#prev_soutien, #next_AR_slide" ).click(function() {
 
 
         target = $(this).attr( "alt" );
 
-        if (target === "tab3"){
+        if (target === "tab2"){
           window.parent.showTab(target);
         }
 
         else
         {
-           $( "span.count" ).empty().html("5/66" );
-           $( "span#ARslide_no" ).text('5');
+           $( "span.count" ).empty().html("4/62" );
+           $( "span#ARslide_no" ).text('4');
 
             target = "../../programs/AIT/AR/" + target;
             
@@ -67,7 +67,7 @@
 
         </td>
          <td style="padding:0 10px 0 30px;">
-          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="tab3" id="prev_pretest"/>
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="tab2" id="prev_soutien"/>
         </td>
         <td style="padding: 0;">
           <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="AIT_AR_slide_2.html" id="next_AR_slide"/>

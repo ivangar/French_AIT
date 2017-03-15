@@ -10,33 +10,21 @@
 		        counter = 2;
 		        break;
 			case 'tab3':
-		        counter = 3;
-		        break;
-			case 'tab4':
-				($( "span#ARslide_no" ).text() == "") ? counter = 4 : counter = $( "span#ARslide_no" ).text();
+				($( "span#ARslide_no" ).text() == "") ? counter = 3 : counter = $( "span#ARslide_no" ).text();
 		        break;	
-			case 'tab5':
-				($( "span#SCITslide_no" ).text() == "") ? counter = 12 : counter = $( "span#SCITslide_no" ).text();
+			case 'tab4':
+				($( "span#SCITslide_no" ).text() == "") ? counter = 11 : counter = $( "span#SCITslide_no" ).text();
+		        break;	
+		    case 'tab5':
+		    	($( "span#SLITslide_no" ).text() == "") ? counter = 21 : counter = $( "span#SLITslide_no" ).text();
 		        break;	
 		    case 'tab6':
-		    	($( "span#SLITslide_no" ).text() == "") ? counter = 22 : counter = $( "span#SLITslide_no" ).text();
-		        break;	
+		    	($( "span#AFPslide_no" ).text() == "") ? counter = 51 : counter = $( "span#AFPslide_no" ).text();
+		        break;		
 		    case 'tab7':
-		    	($( "span#AFPslide_no" ).text() == "") ? counter = 52 : counter = $( "span#AFPslide_no" ).text();
+		        counter =  62;
 		        break;		
-		    case 'tab8':
-		        counter =  63;
-		        break;		
-		    case 'tab9':
-		        counter =  64;
-		        break;	   
-		    case 'tab10':
-		        counter =  65;
-		        break;	  
-		    case 'tab11':
-		        counter =  66;
-		        break;   		        
-		} 
+		    } 
 
 		return counter;
 	};
@@ -44,17 +32,17 @@
 	//fire click event for the slide
 	var nextPage = function( section ) {
 		switch (section) {
-		    case "4":
+		    case "3":
 		        ( $( "span#ARslide_no" ).text() == "11" ) ? $( "#next_SCIT_section" ).click() : $( "#next_AR_slide" ).click();
 		        break;
-			case "5":
+			case "4":
 		        ( $( "span#SCITslide_no" ).text() == "21" ) ? $( "#next_SLIT_section" ).click() : $( "#next_SCIT_slide" ).click();
 		        break;
-			case "6":
+			case "5":
 				( $( "span#SLITslide_no" ).text() == "51" ) ? $( "#next_AFP_section" ).click() : $( "#next_SLIT_slide" ).click();
 		        break;	
-			case "7":
-				( $( "span#AFPslide_no" ).text() == "62" ) ? $( "#next_forum_section" ).click() : $( "#next_AFP_slide" ).click();
+			case "6":
+				( $( "span#AFPslide_no" ).text() == "61" ) ? $( "#next_forum_section" ).click() : $( "#next_AFP_slide" ).click();
 		        break;	      
 		} 
 	};
@@ -62,16 +50,16 @@
 	//fire click event for the slide
 	var prevPage = function( section ) {
 		switch (section) {
-		    case "4":
-		        ( $( "span#ARslide_no" ).text() == "" ) ? $( "#prev_pretest" ).click() : $( "#prev_AR_slide" ).click();
+		    case "3":
+		        ( $( "span#ARslide_no" ).text() == "" ) ? $( "#prev_soutien" ).click() : $( "#prev_AR_slide" ).click();
 		        break;
-			case "5":
+			case "4":
 		        ( $( "span#SCITslide_no" ).text() == "" ) ? $( "#prev_AR_section" ).click() : $( "#prev_SCIT_slide" ).click();
 		        break;
-			case "6":
+			case "5":
 				( $( "span#SLITslide_no" ).text() == "" ) ? $( "#prev_SCIT_section" ).click() : $( "#prev_SLIT_slide" ).click();
 		        break;	
-			case "7":
+			case "6":
 				( $( "span#AFPslide_no" ).text() == "" ) ? $( "#prev_SLIT_section" ).click() : $( "#prev_AFP_slide" ).click();
 		        break;	      
 		} 
@@ -118,7 +106,7 @@
 	    window.showTab = function (tab) {
 	    	$("#v-nav ul li[tab=" + tab + "]").click();
 
-	    	$( "span.count" ).empty().html(countPages(tab) + "/66" );
+	    	$( "span.count" ).empty().html(countPages(tab) + "/62" );
 	    }
 
 	    // Bind the event hashchange, using jquery-hashchange-plugin
@@ -157,7 +145,7 @@
 	            var hash = location.hash.replace("#", "");
 	            var section = hash.substring(3);
 	 
-	            if( section < 4 || section > 7) {
+	            if( section < 3 || section > 6) {
 					section = --section;
 					hash = 'tab' + section;
 	            	window.parent.showTab(hash);
@@ -170,7 +158,7 @@
 	            var hash = location.hash.replace("#", "");
 	            var section = hash.substring(3);
 	            
-	            if( section < 4 || section > 7) {
+	            if( section < 3 || section > 6) {
 					section = ++section;
 					hash = 'tab' + section;
 	            	window.parent.showTab(hash);

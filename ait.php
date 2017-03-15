@@ -111,7 +111,7 @@ if($sections_status['evaluation']){
 if($no_sections_completed !== $no_sections){
     	foreach($sections_status as $section => $status)
     	{
-    		if(strcmp($section,'evaluation') == 0) break;
+    		if((strcmp($section,'evaluation') == 0) || (strcmp($section,'forum') == 0)) break;
 
     		elseif($status)
         	$no_sections_completed++;
@@ -241,6 +241,8 @@ line-height: 10px;
 		  <td style="padding: 10px 0 0 0;">
 	          <section id="wrapper" class="wrapper">
 	              <div id="v-nav">
+	              	<!--  THIS LIST WAS USED FOR WHEN THE PROGRAM WAS ACCREDITED
+	              		SEE MODIFIED LIST BELOW!!
 					  <ul>
 	                      <li tab="tab1" class="first current" >Introduction</li>
 	                      <li tab="tab2" > Soutien commercial </li>
@@ -253,15 +255,56 @@ line-height: 10px;
 						  <li tab="tab9" >Post-test</li>
 	                      <li tab="tab10" >Questionnaire d'évaluation</li>
 	                      <li tab="tab11" class="last">Agrément</li>
+
+					  </ul>
+					  <div class="tab-content" >
+	                  	<?php //require_once('introduction.html'); ?>  
+	                  </div>
+	                  <div class="tab-content" >
+	                  	<?php //require_once('soutien_commercial.html'); ?>  
+	                  </div>
+	                  <div class="tab-content" >
+	                  		<?php //require_once('pretest.html'); ?>  
+	                  </div>
+	                  <div class="tab-content" id="AR_section">
+	                  		<?php //require_once('AR/AIT_AR_slide_1.html'); ?>
+	                  </div>
+	                  <div class="tab-content" id="SCIT_section">
+	                        <?php //require_once('SCIT/AIT_SCIT_slide_1.html'); ?> 
+	                  </div>
+	                  <div class="tab-content" id="SLIT_section">
+	                        <?php //require_once('SLIT/AIT_SLIT_slide_1.html'); ?>     
+	                  </div>
+	                  <div class="tab-content" id="AFP_section">
+	                  	<?php //require_once('AFP/AIT_AFP_slide_1.html'); ?>           
+	                  </div>
+	                  <div class="tab-content">
+	                      <?php //require_once('forum.php'); ?>           
+	                  </div>
+	                  <div class="tab-content" id="post_test_section" >
+	                  	<?php //require_once('postest.html'); ?> 
+	                  </div>
+	                  <div class="tab-content" >
+	                  	<?php //require_once('evaluation.html'); ?> 
+	                  </div>
+	                  <div class="tab-content" >
+	                  	<?php //require_once('accreditation.html'); ?> 
+	                  </div>
+					  END OF ORIGINAL ACCREDITED LIST-->
+					  <ul>
+	                      <li tab="tab1" class="first current" >Introduction</li>
+	                      <li tab="tab2" > Soutien commercial </li>
+	                      <li tab="tab3" >Description de la rhinite allergique<br/><span class="slides_qty">(8 diapositives)</span></li>
+	                      <li tab="tab4" >Immunothérapie sous-cutanée<br/><span class="slides_qty">(10 diapositives)</span></li>
+						  <li tab="tab5" >Comprimé d’immunothérapie sublingual<br/><span class="slides_qty">(30 diapositives)</span></li>
+						  <li tab="tab6" >Approche dans la pratique de médecine familiale<br/><span class="slides_qty">(11 diapositives)</span></li>
+	                      <li tab="tab7" >Questionnaire d'évaluation</li>
 					  </ul>
 	                  <div class="tab-content" >
 	                  	<?php require_once('introduction.html'); ?>  
 	                  </div>
 	                  <div class="tab-content" >
 	                  	<?php require_once('soutien_commercial.html'); ?>  
-	                  </div>
-	                  <div class="tab-content" >
-	                  		<?php require_once('pretest.html'); ?>  
 	                  </div>
 	                  <div class="tab-content" id="AR_section">
 	                  		<?php require_once('AR/AIT_AR_slide_1.html'); ?>
@@ -275,18 +318,11 @@ line-height: 10px;
 	                  <div class="tab-content" id="AFP_section">
 	                  	<?php require_once('AFP/AIT_AFP_slide_1.html'); ?>           
 	                  </div>
-	                  <div class="tab-content">
-	                      <?php require_once('forum.php'); ?>           
-	                  </div>
-	                  <div class="tab-content" id="post_test_section" >
-	                  	<?php require_once('postest.html'); ?> 
-	                  </div>
+
 	                  <div class="tab-content" >
 	                  	<?php require_once('evaluation.html'); ?> 
 	                  </div>
-	                  <div class="tab-content" >
-	                  	<?php require_once('accreditation.html'); ?> 
-	                  </div>
+
 	              </div>
 	          </section>
   	</td>
