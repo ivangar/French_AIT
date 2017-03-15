@@ -1,0 +1,53 @@
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+    $( "#prev_SLIT_slide, #next_SLIT_slide" ).click(function() {
+
+        var page = ( $(this).attr( "id" ) === "prev_SLIT_slide" ) ? 47 : 49;
+        $( "span.count" ).empty().html(page + "/66" );
+        $( "span#SLITslide_no" ).text(page);
+        
+        target = $(this).attr( "alt" );
+        target = "../../programs/AIT/SLIT/" + target;
+
+        /* make an ajax call to retrieve next slide */
+        $.ajax(
+          {url:target,
+            cache: false,
+            type: "GET",
+            dataType: "html"
+          }) 
+
+        .done(function( data ) {
+              $( "#SLIT_section" ).empty();
+              $( "#SLIT_section" ).html( data );
+        })
+         .fail(function() {
+             var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+            $( "#SLIT_section" ).html( no_data );
+        });
+        
+    });
+
+  });//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+      
+          <div style="padding0;margin0;">
+              <span class="subTitle">Administration de la dose </span></br>
+                <p style="padding-top:10px;"> L’administration du C-ITSL exige de placer le comprimé sous la langue du patient, où il se dissoudra. On doit demander aux patients d’éviter d’avaler pendant une minute et d’éviter de manger ou de boire pendant 10 minutes après avoir placé le comprimé sous leur langue. Le C-ITSL doit être administré approximativement à la même heure chaque jour.</p>
+                <p> La première dose du C-ITSL doit être administrée au cabinet ou à la clinique du médecin, et une période d’observation de 30 minutes est nécessaire. Cette période d’observation doit être prolongée si un patient présente une réaction défavorable importante. Si une intervention particulière est nécessaire pour le traitement d’une telle réaction et que cette intervention ne peut être réalisée au cabinet ou à la clinique, le patient doit être transféré dans un établissement approprié. </p>
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_SLIT_slide_26.html" id="prev_SLIT_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="AIT_SLIT_slide_28.html" id="next_SLIT_slide"/>
+        </td>
+    </tr> 
+    </table>
+</div>

@@ -1,0 +1,68 @@
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+    if (bowser.msie) {
+       var width = 'width';
+       var height = 'height';
+    }
+    else{
+          var width = 'innerWidth';
+          var height = 'innerHeight';
+    }
+
+    $( "#prev_SCIT_slide, #next_SCIT_slide" ).click(function() {
+        var page = ( $(this).attr( "id" ) === "prev_SCIT_slide" ) ? 16 : 18;
+        $( "span.count" ).empty().html(page + "/66" );
+        $( "span#SCITslide_no" ).text(page);
+        
+        target = $(this).attr( "alt" );
+        target = "../../programs/AIT/SCIT/" + target;
+
+        /* make an ajax call to retrieve next slide */
+        $.ajax(
+          {url:target,
+            cache: false,
+            type: "GET",
+            dataType: "html"
+          }) 
+
+        .done(function( data ) {
+              $( "#SCIT_section" ).empty();
+              $( "#SCIT_section" ).html( data );
+        })
+         .fail(function() {
+             var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+            $( "#SCIT_section" ).html( no_data );
+        });
+        
+    });
+
+    $( "#SCIT_slide1" ).click(function() {
+          window.open('https://dxlink.ca/fr/programs/AIT/images/Slide10_large.jpg','_blank','' + width + '=750px,' + height + '=563px,menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no');
+    });
+
+  });//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+          <div style="padding0;margin0;">
+              <span class="subTitle">Effets de l’immunothérapie spécifique chez les patients atteints de RA avec hyperréactivité bronchique</span><br/>
+                <p style="padding-top:10px;"> <span class="thumb-screen two-line-spaced" id="SCIT_slide1"></span><img style="float:right; margin: 0px 0px 10px 25px;cursor: pointer;" src="images/Slide10_small.jpg" width="200" height="150" />Cette étude a montré qu’une ITSC contre l’allergie aux acariens de la poussière de maison atténue l’hyperréactivité bronchique et soulage l’asthme chez les jeunes adultes.</p>
+                <p> Cette étude avait pour but d’évaluer la capacité d’une immunothérapie spécifique à réduire l’évolution de la RA vers l’asthme et à prévenir une hausse de l’hyperréactivité bronchique. Un total de 44 sujets monosensibilisés à Dermatophagoides pteronyssinus, et souffrant d’une RA apériodique et d’une hyperréactivité bronchique à la méthacholine, ont été répartis au hasard pour recevoir une immunothérapie spécifique ou un placebo dans le cadre d’une étude à double insu réalisée sur une période de deux ans. </p>
+                <p> Après un an de traitement, on a observé une augmentation de 2,88 fois de la dose de provocation de méthacholine produisant une diminution de 20 % du VEMS (DP<sub>20</sub>du VEMS) dans le groupe recevant une immunothérapie spécifique (IC à 95 % : 3,98 à 2,09; p &#60; 0,001), avec une hausse additionnelle de 4 fois à la fin de la période de deux ans (IC à 95 % : 2,9 à 5,7; p &#60; 0,001). À la fin de l’étude, la dose de provocation de méthacholine nécessaire pour produire une diminution de 20 % du VEMS se situait à l’intérieur des limites de la normale chez 50 % des sujets traités (p &#60; 0,0001), et elle était significativement plus élevée comparativement à celle observée dans le groupe de patients recevant le placebo (p &#60; 0,0001). Au contraire, aucun changement n’a été observé, tout au long de l’étude, dans la dose de provocation de méthacholine produisant une diminution de 20 % du VEMS dans le groupe placebo. Cependant, on a constaté l’apparition d’asthme chez 9 % des sujets ayant reçu le placebo, comparativement à aucun sujet dans le groupe recevant l’immunothérapie spécifique.</p>
+                <p> Les résultats de cette étude laissent croire qu’une immunothérapie spécifique, lorsqu’elle est administrée à des patients atteints de RA apériodique monosensibilisés et soigneusement choisis, diminue la réactivité bronchique chez les sujets atteints de rhinite, et qu’il peut s’agir d’un traitement prophylactique approprié chez les patients souffrant de rhinite qui présentent une hyperréactivité bronchique. </p>
+                <br/>
+                <p class="info_reference">Référence :<br/> Grembialie RD, Camporota L, Naty S, et al. Effects of specific immunotherapy in allergic rhinitic individuals with bronchial hyperresponsiveness. Am J Respir Crit Care Med, 2000; 162(6):2048-52.</p>
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_SCIT_slide_5.html" id="prev_SCIT_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="AIT_SCIT_slide_7.html" id="next_SCIT_slide"/>
+        </td>
+    </tr> 
+    </table>
+</div>

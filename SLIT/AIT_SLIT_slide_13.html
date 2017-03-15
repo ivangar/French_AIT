@@ -1,0 +1,56 @@
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+    $( "#prev_SLIT_slide, #next_SLIT_slide" ).click(function() {
+        var page = ( $(this).attr( "id" ) === "prev_SLIT_slide" ) ? 33 : 35;
+        $( "span.count" ).empty().html(page + "/66" );
+        $( "span#SLITslide_no" ).text(page);
+        
+        target = $(this).attr( "alt" );
+        target = "../../programs/AIT/SLIT/" + target;
+
+        /* make an ajax call to retrieve next slide */
+        $.ajax(
+          {url:target,
+            cache: false,
+            type: "GET",
+            dataType: "html"
+          }) 
+
+        .done(function( data ) {
+              $( "#SLIT_section" ).empty();
+              $( "#SLIT_section" ).html( data );
+        })
+         .fail(function() {
+             var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+            $( "#SLIT_section" ).html( no_data );
+        });
+        
+    });
+
+  });//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+      
+          <div style="padding0;margin0;">
+              <span class="subTitle">Efficacité et innocuité du C-ITSL au moyen d’un comprimé composé d’un extrait allergénique de pollen de graminées  </span></br>
+                <p style="padding-top:10px;"> Cette étude longitudinale, à double insu, contrôlée par placebo et menée en mode parallèle visait à confirmer l’efficacité d’un comprimé à dissolution rapide composé d’un extrait allergénique de pollen de graminées, comparativement à un placebo, chez des patients souffrant de rhinoconjonctivite saisonnière.</p>
+                <p>L’étude a été menée auprès de 634 sujets provenant de 51 centres répartis dans huit pays. Les sujets ont été répartis au hasard (1:1) pour recevoir un comprimé composé d’un extrait allergénique de pollen de graminées ou un placebo une fois par jour. Tous les patients présentaient des antécédents de rhinoconjonctivite induite par le pollen de graminées depuis au moins deux ans dont le diagnostic avait été confirmé par la présence d’IgE spécifiques (réaction positive à un test d’intradermoréaction et dosage des IgE spécifiques). Les sujets ont amorcé le traitement au moins 16 semaines avant la saison des allergies au pollen de graminées, et le traitement s’est poursuivi pendant la saison entière.</p>
+                <p> L’analyse principale de l’efficacité a montré une réduction de 30 % de l’indice des symptômes de rhinoconjonctivite (p &#60; 0,0001) et une réduction de 38 % de l’indice d’utilisation de médicaments contre la rhinoconjonctivite (p &#60; 0,0001), comparativement au placebo.</p>
+                <p>Les effets indésirables comptaient principalement des démangeaisons légères et un œdème de la bouche. Ces effets étaient généralement tolérés et n’ont conduit à l’abandon du traitement que chez moins de 4 % des participants. Aucun effet indésirable local grave ou d’événement indésirable général grave n’a été observé. </p>
+                </br>
+                <p class="info_reference">Référence :</br>Dahl R, Kapp A, Colombo G, et al. Efficacy and safety of sublingual immunotherapy with grass allergen tablets for seasonal allergic rhinoconjunctivitis, J Allergy Clin Immunol, 2006; 118(2):434-40.</p>                      
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_SLIT_slide_12.html" id="prev_SLIT_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="AIT_SLIT_slide_14.html" id="next_SLIT_slide"/>
+        </td>
+    </tr> 
+    </table>
+</div>

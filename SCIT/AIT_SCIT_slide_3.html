@@ -1,0 +1,65 @@
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+    if (bowser.msie) {
+       var width = 'width';
+       var height = 'height';
+    }
+    else{
+          var width = 'innerWidth';
+          var height = 'innerHeight';
+    }
+
+    $( "#prev_SCIT_slide, #next_SCIT_slide" ).click(function() {
+        var page = ( $(this).attr( "id" ) === "prev_SCIT_slide" ) ? 13 : 15;
+        $( "span.count" ).empty().html(page + "/66" );
+        $( "span#SCITslide_no" ).text(page);
+        
+        target = $(this).attr( "alt" );
+        target = "../../programs/AIT/SCIT/" + target;
+
+        /* make an ajax call to retrieve next slide */
+        $.ajax(
+          {url:target,
+            cache: false,
+            type: "GET",
+            dataType: "html"
+          }) 
+
+        .done(function( data ) {
+              $( "#SCIT_section" ).empty();
+              $( "#SCIT_section" ).html( data );
+        })
+         .fail(function() {
+             var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+            $( "#SCIT_section" ).html( no_data );
+        });
+        
+    });
+
+    $( "#SCIT_slide1" ).click(function() {
+          window.open('https://dxlink.ca/fr/programs/AIT/images/Slide07_large.jpg','_blank','' + width + '=750px,' + height + '=563px,menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no');
+    });
+
+  });//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+          <div style="padding0;margin0;">
+              <span class="subTitle">Efficacité clinique à long terme de l’immunothérapie contre l’allergie au pollen des graminées : résultats</span><br/>
+                <p style="padding-top:10px;"> <span class="thumb-screen two-line-spaced" id="SCIT_slide1"></span><img style="float:right; margin: 0px 0px 10px 25px;cursor: pointer;" src="images/Slide07_small.jpg" width="200" height="150" />Ces graphiques montrent l’indice des symptômes hebdomadaire dans l’étude initiale avec le placebo (menée en 1989) et dans l’étude subséquente (1993 jusqu’en 1995). </p>
+                <p> Tout au long de l’étude menée entre 1993 et 1995, l’indice de pollen hebdomadaire maximal se situait invariablement, en juin et en juillet, dans la moyenne ou au-dessus de la moyenne. Les indices des symptômes totaux du rhume des foins observés dans le groupe recevant le traitement d’entretien et dans celui ayant abandonné le traitement présentaient un lien temporel avec l’indice de pollen, sont demeurés faibles et étaient comparables à ceux consignés pendant les trois années précédentes, au cours desquelles tous les patients des deux groupes ont reçu une immunothérapie active. Aucune différence significative n’a été observée entre les deux groupes pendant la période de trois ans.</p>
+                <p class="info_reference">Référence :<br/> Durham SR, Walker SM, Varga EM, et al. Long-term clinical efficacy of grass-pollen immunotherapy. N Engl J Med, 1999; 341(7):468-75.</p>
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_SCIT_slide_2.html" id="prev_SCIT_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="AIT_SCIT_slide_4.html" id="next_SCIT_slide"/>
+        </td>
+    </tr> 
+    </table>
+</div>

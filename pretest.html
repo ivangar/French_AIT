@@ -1,0 +1,321 @@
+
+<script type="text/javascript">
+    /*$.noConflict();*/
+  $(document).ready(function () {
+
+      var preTestId = <?php if(isset($pretestId)) {echo " '$pretestId' ";} else echo 0; ?>;  //replace all section ids in the code
+      var no_questions = 6;
+
+      //swith to another section
+      $( "#prev_soutien, #next_AR, .accred_reqs" ).click(function() {
+          var target = ( $(this).attr( "class" ) === "accred_reqs" ) ? $(this).attr( "title" ) : $(this).attr( "alt" );
+          window.parent.showTab(target);
+      });
+
+      $( "#AIT-pre-test" ).submit(function( event ) {
+
+          // customize Parsley errors class to append the errorwraper ul inside the container div specified
+          $( '#AIT-pre-test' ).parsley( {
+              errors: {
+                  container: function (element, isRadioOrCheckbox) {
+                      var $container = element.parent().find(".parsley-container");
+                      if ($container.length === 0) {
+                          $container = $("<div class='parsley-container' style='text-indent:0; margin-left:0;'></div>").insertBefore(element.parent());
+                      }
+                      return $container;
+                  }
+              }
+          } );
+
+          //since the form is submitted using jQuery event, bind the form with Parsley.
+          var form_valid = $( '#AIT-pre-test' ).parsley( 'validate' );
+          
+          //prevent form submission if parsley returns false
+          if ( !form_valid )
+          {
+              event.preventDefault();
+          }
+
+          //Gather all data and process after Parsley validations return success
+          else{
+              $( '#AIT-pre-test' ).parsley( 'destroy' );
+
+              //Get all choice letters submitted (a, b, c, etc.)
+              var choices = new Object();
+
+              $('input[type="radio"]:checked').each(function() {
+                  var choice = (this.id).slice(-1);
+                  var question_id = this.name;
+                  choices[question_id]=choice;
+              });
+              
+              question_answer = $("#AIT-pre-test").serializeArray();
+              program_submitted = { "no_qs": no_questions, "qas":question_answer, "choices":choices, "program_section": preTestId}; 
+              target = "../lib/php/process_test.php";
+              
+              // make an ajax call to save answers in the database
+              $.ajax({
+                  url: target,
+                  cache: false,
+                  type: "POST",
+                  dataType: "html",
+                  data: program_submitted
+                }) 
+
+              .done(function( data ) {
+                  if (data === "incomplete"){
+                      console.log(data);
+                      var validation_msg = " <ul> <li>Veuillez choisir une réponse pour toutes les questions. </li></ul>";
+                      $( ".parsley-container.pretest.backend" ).html( validation_msg );
+                      $( ".parsley-container.pretest.backend" ).show();
+                        $("html, body").animate({
+                          scrollTop: 0
+                        }, 500);     
+                  }
+
+                  else{
+                    document.location.reload(true); //reload page in order to update access to post-test form
+                  }
+              })
+              .fail(function() {
+                    var no_data = "<div class='parsley-container.pretest.backend'> <ul> <li>Nous sommes désolés, les questions n'ont pas été traitées. Essayez à nouveau. </li></ul></div>";
+                    $( "#completed_pretest" ).html( no_data );
+                    $( "#completed_pretest" ).show();
+              }); //ajax call
+              
+          } //end else
+
+          event.preventDefault();
+
+      }); //click function   
+
+  });//end document.ready
+
+</script>
+<table border="0" cellspacing="0">
+<tr valign="top">
+<td style="padding:0;width:620px;">
+<?php if( isset($sections_status['pretest']) && $sections_status['pretest'] ) { ?>  
+<div id="completed_pretest" style="padding:0 0 0 10px;">
+<h2 style="margin:0 0 15px 0;">Immunothérapie allergénique : <br>Une mise à jour pour les médecins de soins primaires</h2><h2 style="margin:0 0 15px 0;">Pré-test:</h2>
+<h3 style="line-height:25px;">Merci d’avoir complété le pré-test de ce programme. Pour voir vos certificats et un résumé des exigences d'agrément non satisfaites, <span class="accred_reqs" title="tab11">cliquez ici.</span></h3>
+</div>
+<?php } else { ?>
+<div id="pre-test" >
+<form class="jotform-form" action="" method="POST" data-ajax="false" name="AIT-pre-test" id="AIT-pre-test" accept-charset="utf-8">
+  <div class="form-all" style="width:620px;">
+    <ul class="form-section">
+      <li class="form-line" id="id_1" style="margin:0;padding-top:0;">
+        <div id="cid_1pre" style="margin:0;">
+          <div id="text_1pre" class="form-html" style="padding:0 0 10px 0;">
+            <h3>
+              Immunothérapie allergénique : <br>Une mise à jour pour les médecins de soins primaires
+            </h3>
+             <h3>Pré-test:</h3>
+            <p>
+              La participation à ce pré-test est requise à des fins d'agrément et pour l’attribution d'un certificat.
+            </p>
+            <p>
+             Votre pointage vous sera fourni après avoir terminé le post-test.
+            </p>
+            <p>Pour voir vos certificats et un résumé des exigences d'agrément non satisfaites, <span class="accred_reqs" title="tab11">cliquez ici.</span></p>
+          </div>
+          <hr />
+        </div>
+         <div class="parsley-container pretest backend" style="display:none;"> </div>
+      </li>
+      <li class="form-line " id="id_2pre">
+        <label class="form-label-top" id="label_3pre" for="input_3">1. Dans les cas de rhinite allergique de classe I, quelle est la première mesure de prise en charge recommandée dans les lignes directrices canadiennes? </label>
+        <div id="cid_3pre" class="form-input-wide">
+          <div class="form-single-column">
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_3_pre_a" parsley-required="true" name="AIT_Q_1" value="allergen/irritant avoidance." parsley-error-message="Veuillez choisir une réponse" /><label for="input_3_pre_a">a) Éviction de l'allergène/irritant </label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_3_pre_b" name="AIT_Q_1" value="non-sedating oral antihistamine." /><label for="input_3_pre_b">b) Antihistaminique oral non sédatif
+             </label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_3_pre_c" name="AIT_Q_1" value="intranasal corticosteroid." /><label for="input_3_pre_c">c) Corticostéroïde intranasal </label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_3_pre_d" name="AIT_Q_1" value="leukotriene receptor antagonist." /><label for="input_3_pre_d">d) Antagoniste des récepteurs des leucotriènes
+              </label>
+            </span><span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_3_pre_e" name="AIT_Q_1" value="none of the above." /><label for="input_3_pre_e">e) Aucune de ces réponses 
+             </label>
+            </span>
+            <span class="clearfix"></span>
+          </div>
+        </div>
+      </li>
+      <li class="form-line " id="id_3pre">
+        <label class="form-label-top" id="label_4pre" for="input_4">2. La vaste majorité des réactions générales à l'immunothérapie allergénique sous-cutanée surviennent : </label>
+        <div id="cid_4pre" class="form-input-wide">
+          <div class="form-single-column">
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_4_pre_a" parsley-required="true" parsley-error-message="Veuillez choisir une réponse" name="AIT_Q_2" value="within 5 minutes of injection." /><label for="input_4_pre_a">a) dans les 5 minutes suivant l'injection</label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_4_pre_b" name="AIT_Q_2" value="within 15 minutes of injection." /><label for="input_4_pre_b">b) dans les 15 minutes suivant l'injection</label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_4_pre_c" name="AIT_Q_2" value="between 0 and 30 minutes after injection." /><label for="input_4_pre_c">c) dans les 30 minutes suivant l'injection</label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_4_pre_d" name="AIT_Q_2" value="between 30 and 45 minutes after injection." /><label for="input_4_pre_d">d) de 30 à 45 minutes après l'injection </label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_4_pre_e" name="AIT_Q_2" value="more than 45 minutes after injection." /><label for="input_4_pre_e">e) plus de 45 minutes après l'injection</label>
+            </span>
+            <span class="clearfix"></span>
+          </div>
+        </div>
+      </li>
+      <li class="form-line" id="id_4pre">
+        <label class="form-label-top" id="label_5pre" for="input_5">3. Il a été démontré que l'effet clinique d'un comprimé d'immunothérapie sublinguale à base de pollen de graminées se maintient :</label>
+        <div id="cid_5pre" class="form-input-wide">
+          <div class="form-single-column">
+            <span class="form-radio-item" style="clear:left;">
+            <input type="radio" class="form-radio" id="input_5_pre_a" parsley-required="true" parsley-error-message="Veuillez choisir une réponse" name="AIT_Q_3" value="for a maximum of 3 months." /><label for="input_5_pre_a">a) pendant un maximum de 3 mois </label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_5_pre_b" name="AIT_Q_3" value="for a maximum of 12 months." /><label for="input_5_pre_b">b) pendant un maximum de 12 mois </label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_5_pre_c" name="AIT_Q_3" value="after 2 years." /><label for="input_5_pre_c">c) 2 ans </label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_5_pre_d" name="AIT_Q_3" value="after 5 years." /><label for="input_5_pre_d">d) 5 ans</label>
+            </span>
+            <span class="clearfix"></span>
+          </div>
+        </div>
+      </li>
+      <li class="form-line" id="id_5pre">
+        <label class="form-label-top" id="label_5pre" for="input_6pre">4. Le premier comprimé d'immunothérapie sublinguale doit être :</label>
+        <div id="cid_6pre" class="form-input-wide">
+          <div class="form-single-column">
+            <span class="form-radio-item" style="clear:left;">
+            <input type="radio" class="form-radio" id="input_6_pre_a" parsley-required="true" parsley-error-message="Veuillez choisir une réponse" name="AIT_Q_4" value="by the patient at home." /><label for="input_6_pre_a">a) pris par le patient à la maison </label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_6_pre_b" name="AIT_Q_4" value="in the office/clinic with no need for an observation period." /><label for="input_6_pre_b">b) administré au cabinet/à la clinique, sans période d'observation</label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_6_pre_c" name="AIT_Q_4" value="in the office/clinic with a minimum 10-minute observation period." /><label for="input_6_pre_c">c) administré au cabinet/à la clinique, suivi d'une période d'observation d'au moins 10 minutes</label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_6_pre_d" name="AIT_Q_4" value="in the office/clinic with a minimum 30-minute observation period." /><label for="input_6_pre_d">d) administré au cabinet/à la clinique, suivi d'une période d'observation d'au moins 30 minutes </label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_6_pre_e" name="AIT_Q_4" value="only in a specialized allergy clinic." /><label for="input_6_pre_e">e) administré uniquement dans une clinique spécialisée dans les allergies</label>
+            </span>
+            <span class="clearfix"></span>
+          </div>
+        </div>
+      </li>
+      <li class="form-line" id="id_6pre">
+        <label class="form-label-top" id="label_6pre" for="input_7pre">5. Comparativement à l'immunothérapie allergénique sous-cutanée, l'immunothérapie allergénique par comprimé sublingual :</label>
+        <div id="cid_7pre" class="form-input-wide">
+          <div class="form-single-column">
+            <span class="form-radio-item" style="clear:left;">
+            <input type="radio" class="form-radio" id="input_7_pre_a" parsley-required="true" parsley-error-message="Veuillez choisir une réponse" name="AIT_Q_5" value="equally effective in controlled trials, with equal risk of anaphylaxis." /><label for="input_7_pre_a">a) s'est révélée aussi efficace dans les études contrôlées, avec un risque égal d'anaphylaxie</label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_7_pre_b" name="AIT_Q_5" value="equally effective in controlled trials, with greater risk of anaphylaxis." /><label for="input_7_pre_b">b) s'est révélée aussi efficace dans les études contrôlées, avec un risque plus élevé d'anaphylaxie</label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_7_pre_c" name="AIT_Q_5" value="equally effective in controlled trials, with lower risk of anaphylaxis." /><label for="input_7_pre_c">c) s'est révélée aussi efficace dans les études contrôlées, avec un risque plus faible d'anaphylaxie </label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_7_pre_d" name="AIT_Q_5" value="more effective in controlled trials, with equal risk of anaphylaxis." /><label for="input_7_pre_d">d) s'est révélée plus efficace dans les études contrôlées, avec un risque égal d'anaphylaxie</label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_7_pre_e" name="AIT_Q_5" value="more effective in controlled trials, with lower risk of anaphylaxis." /><label for="input_7_pre_e">e) s'est révélée plus efficace dans les études contrôlées, avec un risque plus faible d'anaphylaxie</label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_7_pre_f" name="AIT_Q_5" value="less effective in controlled trials, with greater risk of anaphylaxis." /><label for="input_7_pre_f">f) s'est révélée moins efficace dans les études contrôlées, avec un risque plus élevé d'anaphylaxie</label>
+            </span>
+            <span class="clearfix"></span>
+          </div>
+        </div>
+      </li>
+      <li class="form-line" id="id_7pre">
+        <label class="form-label-top" id="label_6pre" for="input_8pre">6. Les raisons de diriger un patient atteint de rhinite allergique vers un spécialiste comprennent : </label>
+        <div id="cid_8pre" class="form-input-wide">
+          <div class="form-single-column">
+            <span class="form-radio-item" style="clear:left;">
+            <input type="radio" class="form-radio" id="input_8_pre_a" parsley-required="true" parsley-error-message="Veuillez choisir une réponse" name="AIT_Q_6" value="symptoms not adequately responding to medical therapy." /><label for="input_8_pre_a">a) symptômes ne répondant pas adéquatement au traitement médical</label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_8_pre_b" name="AIT_Q_6" value="wish to identify allergic triggers for proper allergen avoidance." /><label for="input_8_pre_b">b) volonté de déterminer les allergènes déclencheurs afin de pouvoir les éviter</label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_8_pre_c" name="AIT_Q_6" value="intolerable side effects to, or patient’s refusal to take, medical therapy." /><label for="input_8_pre_c">c) effets secondaires intolérables du traitement médical ou refus du patient de prendre un tel traitement </label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_8_pre_d" name="AIT_Q_6" value="consideration of immunotherapy for patient’s treatment." /><label for="input_8_pre_d">d) évaluation de la pertinence de recourir à l'immunothérapie chez un patient</label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_8_pre_e" name="AIT_Q_6" value="all of the above." /><label for="input_8_pre_e">e) toutes ces réponses</label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_8_pre_f" name="AIT_Q_6" value="only b and d above." /><label for="input_8_pre_f">f) b et d seulement</label>
+            </span>
+            <span class="clearfix"></span>
+            <span class="form-radio-item" style="clear:left;">
+              <input type="radio" class="form-radio" id="input_8_pre_g" name="AIT_Q_6" value="none of the above." /><label for="input_8_pre_g">g) aucune de ces réponses </label>
+            </span>
+            <span class="clearfix"></span>
+          </div>
+        </div>
+      </li>
+      <li id="id_8">
+        <div id="cid_9pre" >
+          <div style="float:right;" class="form-buttons-wrapper">
+            <button id="submit_pretest" type="submit" class="big-form-button">Soumettre</button>
+            <button id="reset_pre_form" type="reset" class="form-submit-reset big-form-button">Effacer le formulaire</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</form>
+</div>
+<?php }//Close else tag ?>
+</td>
+    <td style="padding:0 10px 0 10px;">
+      <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28" align="right" alt="tab2" id="prev_soutien"/>
+    </td>
+    <td style="padding: 0;">
+      <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" align="right" alt="tab4" id="next_AR"/>
+    </td>
+  </tr>
+</table>
+

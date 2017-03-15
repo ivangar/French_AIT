@@ -1,0 +1,68 @@
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+    if (bowser.msie) {
+       var width = 'width';
+       var height = 'height';
+    }
+    else{
+          var width = 'innerWidth';
+          var height = 'innerHeight';
+    }
+
+    $( "#prev_SCIT_slide, #next_SCIT_slide" ).click(function() {
+        var page = ( $(this).attr( "id" ) === "prev_SCIT_slide" ) ? 15 : 17;
+        $( "span.count" ).empty().html(page + "/66" );
+        $( "span#SCITslide_no" ).text(page);
+        
+        target = $(this).attr( "alt" );
+        target = "../../programs/AIT/SCIT/" + target;
+
+        /* make an ajax call to retrieve next slide */
+        $.ajax(
+          {url:target,
+            cache: false,
+            type: "GET",
+            dataType: "html"
+          }) 
+
+        .done(function( data ) {
+              $( "#SCIT_section" ).empty();
+              $( "#SCIT_section" ).html( data );
+        })
+         .fail(function() {
+             var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+            $( "#SCIT_section" ).html( no_data );
+        });
+        
+    });
+
+    $( "#SCIT_slide1" ).click(function() {
+          window.open('https://dxlink.ca/fr/programs/AIT/images/Slide09_large.jpg','_blank','' + width + '=750px,' + height + '=563px,menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no');
+    });
+
+  });//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+          <div style="padding0;margin0;">
+              <span class="subTitle">Immunothérapie avec un extrait standardisé de D. <span style="font-style:italic;"> pteronyssinus</span></span><br/>
+                <p style="padding-top:10px;"> <span class="thumb-screen two-line-spaced" id="SCIT_slide1"></span><img style="float:right; margin: 0px 0px 10px 25px;cursor: pointer;" src="images/Slide09_small.jpg" width="200" height="150"/>Cette étude prospective sans répartition au hasard a été menée auprès d’une population d’enfants asthmatiques âgés de moins de 6 ans chez lesquels la seule sensibilité allergène était aux acariens de la poussière de maison, et visait à déterminer si une immunothérapie spécifique par extraits allergéniques standardisés pouvait prévenir l’apparition de nouvelles sensibilisations sur une période de suivi de trois ans. </p>
+                <p> L’étude comprenait 22 enfants monosensibilisés aux acariens de la poussière de maison qui recevaient une immunothérapie spécifique par extraits allergéniques standardisés et 22 enfants témoins du même âge monosensibilisés aux acariens de la poussière de maison.</p>
+                <p> Dix des 22 enfants monosensibilisés aux acariens de la poussière de maison qui recevaient une immunothérapie spécifique n’ont présenté aucune nouvelle sensibilité, par comparaison à aucun enfant sur 22 dans le groupe témoin (<span style="font-style:italic;">p </span>= 0.001, selon le test du chi carré).</p>
+                <p> D’après les résultats obtenus, les investigateurs en sont venus à la conclusion que l’immunothérapie spécifique chez les enfants monosensibilisés aux acariens de la poussière de maison modifie l’évolution naturelle de l’allergie en prévenant de nouvelles sensibilisations. </p>
+                <br/>
+                <p class="info_reference">Référence :<br/> Des Roches A, Paradis L, Menardo JL, et al. Immunotherapy with a standardized Dermatophagoides pteronyssinus extract. VI. Specific immunotherapy prevents the onset of new sensitizations in children. J Allergy Clin Immunol, 1997; 99(4):450-3.</p>
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_SCIT_slide_4.html" id="prev_SCIT_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="AIT_SCIT_slide_6.html" id="next_SCIT_slide"/>
+        </td>
+    </tr> 
+    </table>
+</div>

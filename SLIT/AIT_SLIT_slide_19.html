@@ -1,0 +1,67 @@
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+    if (bowser.msie) {
+       var width = 'width';
+       var height = 'height';
+    }
+    else{
+        var width = 'innerWidth';
+        var height = 'innerHeight';
+    }
+
+    $( "#prev_SLIT_slide, #next_SLIT_slide" ).click(function() {
+        var page = ( $(this).attr( "id" ) === "prev_SLIT_slide" ) ? 39 : 41;
+        $( "span.count" ).empty().html(page + "/66" );
+        $( "span#SLITslide_no" ).text(page);
+        
+        target = $(this).attr( "alt" );
+        target = "../../programs/AIT/SLIT/" + target;
+
+        /* make an ajax call to retrieve next slide */
+        $.ajax(
+          {url:target,
+            cache: false,
+            type: "GET",
+            dataType: "html"
+          }) 
+
+        .done(function( data ) {
+              $( "#SLIT_section" ).empty();
+              $( "#SLIT_section" ).html( data );
+        })
+         .fail(function() {
+             var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+            $( "#SLIT_section" ).html( no_data );
+        });
+        
+    });
+
+    $( "#SLIT_Slide33" ).click(function() {
+          window.open('https://dxlink.ca/fr/programs/AIT/images/Slide33_large.jpg','_blank','' + width + '=750px,' + height + '=563px,menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no');
+    });
+
+  });//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+      
+          <div style="padding0;margin0;">
+              <span class="subTitle">Dose optimale, efficacité et innocuité de l’immunothérapie sublinguale au moyen d’un comprimé composé de 5 pollens de graminées administré une fois par jour dans la RA saisonnière : protocole de l’étude</span></br>
+                <p style="padding-top:10px;"> <span class="thumb-screen four-line-spaced" id="SLIT_Slide33"></span><img style="float:right; margin: 0px 0px 10px 25px;cursor: pointer;" src="images/Slide33_small.jpg" width="200" height="150"/>Ces investigateurs ont évalué l’efficacité, l’innocuité et la dose optimale des comprimés de pollen de graminées dans l’immunothérapie des patients présentant une RA.</p>
+                <p>Il s’agissait d’une étude multinationale à double insu, à répartition aléatoire et contrôlée par placebo dans laquelle 628 patients adultes atteints de rhinoconjonctivite induite par une allergie au pollen de graminées (confirmée par un test d’intradermoréaction et par un dosage des IgE spécifiques) ont reçu une des trois doses d’un extrait standardisé de pollen de cinq graminées sous forme de comprimé à prendre une fois par jour, ou un placebo, par voie sublinguale. Le traitement a été amorcé quatre mois avant la saison des allergies au pollen prévue, et il a été poursuivi pendant toute la saison. </p>
+                </br>
+                <p class="info_reference">Référence :</br>Didier A, Malling HJ, Worm M, et al. Optimal dose, efficacy and safety of once-daily sublingual immunotherapy with a 5-grass pollen tablet for seasonal allergic rhinitis. J Allergy Clin Immunol, 2007; 120(6):1338-1345.</p>                      
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_SLIT_slide_18.html" id="prev_SLIT_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="AIT_SLIT_slide_20.html" id="next_SLIT_slide"/>
+        </td>
+    </tr> 
+    </table>
+</div>

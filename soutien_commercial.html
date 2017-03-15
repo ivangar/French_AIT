@@ -1,0 +1,50 @@
+<script type="text/javascript">
+  $(document).ready(function () {
+
+      if (bowser.msie) {
+         var width = 'width';
+         var height = 'height';
+      }
+      else{
+            var width = 'innerWidth';
+            var height = 'innerHeight';
+      }
+
+      //swith to another section
+      $( "#prev_intro, #next_preTest" ).click(function() {
+           target = $(this).attr( "alt" );
+          window.parent.showTab(target);
+      });
+ 
+    $( "#soutien_slide" ).click(function() {
+          window.open('https://dxlink.ca/fr/programs/AIT/images/soutien_large.jpg','_blank','' + width + '=750px,' + height + '=563px,menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no');
+    });
+
+  });//end document.ready
+
+</script>
+
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+      
+          <div style="padding0;margin0;">
+              <span class="subTitle">Déclaration de soutien commercial</span></br>
+                <p style="padding-top:10px;"> <span class="thumb-screen" id="soutien_slide"></span> <img style="float:right; margin: 0px 0px 10px 25px;cursor: pointer;" src="images/soutien_small.jpg" width="200" height="150"/></p>
+                <p>Cette diapositive présente les informations relatives au soutien commercial dont a bénéficié ce programme, incluant les affiliations financières de chaque membre des comités scientifique et pédagogique ayant participé à l'élaboration de ce programme. </p>
+          </div>
+        </td>
+        <td style="padding:0 10px 0 10px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28" align="right" alt="tab1" id="prev_intro"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" align="right" alt="tab3" id="next_preTest"/>
+        </td>
+    </tr> 
+
+    </table>
+</div>
+
+
+

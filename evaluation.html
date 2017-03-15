@@ -1,0 +1,484 @@
+<script type="text/javascript">
+    /*$.noConflict();*/
+    $(document).ready(function () {
+
+      var evaluationId = <?php if(isset($evaluation_id_fr)) {echo " '$evaluation_id_fr' ";} else echo ''; ?>;  //replace all section ids in the code
+      var no_questions = 5;
+
+      $( "#prev_post_test_section, #next_accreditation_section" ).click(function() {
+          target = $(this).attr( "alt" );
+          window.parent.showTab(target);
+      });
+       
+      $( "#AIT-program-evaluation" ).submit(function( event ) {
+
+          // customize Parsley errors class to append the errorwraper ul inside the container div specified
+          $( '#AIT-program-evaluation' ).parsley( {
+              errors: {
+                  container: function (element, isRadioOrCheckbox) {
+                      var $container = element.parent().find(".parsley-container");
+                      if ($container.length === 0) {
+                          $container = $("<div class='parsley-container eval'></div>").insertBefore(element);
+                      }
+                      return $container;
+                  }
+              }
+          } );
+
+          //since the form is submitted using jQuery event, bind the form with Parsley.
+          var form_valid = $( '#AIT-program-evaluation' ).parsley( 'validate' );
+
+          //prevent form submission if parsley returns false
+          if ( !form_valid )
+          {
+              event.preventDefault();
+          }
+
+          //Gather all data and process after Parsley validations return success
+          else{
+
+              $( '#AIT-program-evaluation' ).parsley( 'destroy' );
+              
+              //Get all choice letters submitted (1, 2, 3, etc.)
+              var choices = new Object();
+
+              $('input[type="radio"]:checked').each(function() {
+                  var choice = (this.id).slice(-1);
+                  var question_id = this.name;
+                  choices[question_id]=choice;
+              });
+               
+              question_answer = $("#AIT-program-evaluation").serializeArray();
+               
+              evaluation_submitted = { "no_qs": no_questions, "qas":question_answer, "choices":choices, "program_section": evaluationId};
+              target = "../lib/php/process_AIT_evaluation.php";
+
+              $.ajax({
+                  url: target,
+                  cache: false,
+                  type: "POST",
+                  dataType: "html",
+                  data: evaluation_submitted
+                }) 
+              .done(function( data ) {
+                  if (data === "failed"){
+                        $( ".parsley-container.evaluation" ).html( "<ul> <li>L'évaluation du programme ne peut pas être traitée, veuillez selectionner les choix sur l'échele d'évaluation ci-dessous et cochez les questions requis.</li></ul>" );
+                        $( ".parsley-container.evaluation" ).show();
+                        $("html, body").animate({
+                          scrollTop: 0
+                        }, 500);     
+                  }
+
+                  if (data === "completed"){
+
+                      $.ajax({
+                        url: "ait.php",
+                        cache: false
+                      }).done(function(data) {
+                        console.log('Im done' + data);
+                      }).fail(function(data) {
+                        console.log('Oh snap! Something hapened :(' + data);
+                      });
+
+                      $.blockUI({ message: '<img src="images/ajax-loader.gif" width="40" height="40" /> <p>Evaluation du programme en traitement...</p>', 
+                                  css: { 
+                                  top:  ($(window).height() - 200) /2 + 'px', 
+                                  left: ($(window).width() - 400) /2 + 'px', 
+                                  cursor:'auto',
+                                  width: '430px',
+                                  height: '100px',
+                                  border: '7px solid #ccc',
+                                  padding: '20px 0 0 0', 
+                                  backgroundColor: '#fff', 
+                                  '-moz-border-radius': '20px',
+                                  '-webkit-border-radius': '20px',
+                                  'border-radius': '20px'},
+                                 overlayCSS: { backgroundColor: '#000', opacity: .5, cursor:'not-allowed'}
+                      }); 
+                      $('.blockOverlay');
+                      
+                      setTimeout(function() { 
+                          $.unblockUI({ 
+                              onUnblock: function(){ document.location.reload(true); } 
+                          }); 
+                      }, 3000); 
+                      
+                  }
+                  
+              })
+              .fail(function() {
+                    $( ".parsley-container.evaluation" ).html( "<ul> <li>L'évaluation du programme ne peut pas être traitée. S'il vous plaît, essayez de nouveau.</li></ul>" );
+                    $( ".parsley-container.evaluation" ).show();
+                        $("html, body").animate({
+                          scrollTop: 0
+                        }, 500);     
+              }); //ajax call
+              
+          }//end else
+          
+          event.preventDefault();
+
+      }); //click function   
+      
+      //FOLLOWING CODE TO DISABLE/ENABLE CHECK BOX ANSWERS
+
+      $( "#biais_oui, #biais_non" ).change(function() {
+          var $input = $( this );
+          var my_val = $input.val();
+
+          //Check that the check property returns true, then disable/enable accordingly
+          if($input.prop( "checked" )){
+            if(my_val === 'oui'){
+              $( "#biais_non" ).prop( "disabled", true );
+            }
+
+            else{
+              $( "#biais_oui" ).prop( "disabled", true );
+            }
+          }
+          
+          else{
+            $( "#biais_oui" ).prop( "disabled", false );
+            $( "#biais_non" ).prop( "disabled", false );
+          }
+
+      });
+
+      $( "#ethique_ignore, #ethique_oui, #ethique_non" ).change(function() {
+          var $input = $( this );
+          var my_val = $input.val();
+
+          //Check that the check property returns true, then disable/enable accordingly
+          if($input.prop( "checked" )){
+            if(my_val === "je l'ignore"){
+              $( "#ethique_oui" ).prop( "disabled", true );
+              $( "#ethique_non" ).prop( "disabled", true );
+            }
+
+            else if(my_val === "oui"){
+              $( "#ethique_ignore" ).prop( "disabled", true );
+              $( "#ethique_non" ).prop( "disabled", true );
+            }
+
+            else if(my_val === "non"){
+              $( "#ethique_oui" ).prop( "disabled", true );
+              $( "#ethique_ignore" ).prop( "disabled", true );
+            }
+          }
+          
+          else{
+            $( "#ethique_oui" ).prop( "disabled", false );
+            $( "#ethique_ignore" ).prop( "disabled", false );
+            $( "#ethique_non" ).prop( "disabled", false );
+          }
+      });
+
+      $( "#confirme_practique, #modifie_practique" ).change(function() {
+          var $input = $( this );
+          var my_val = $input.val();
+
+          //Check that the check property returns true, then disable/enable accordingly
+          if($input.prop( "checked" )){
+            if(my_val === 'confirme'){
+              $( "#modifie_practique" ).prop( "disabled", true );
+            }
+
+            else{
+              $( "#confirme_practique" ).prop( "disabled", true );
+            }
+          }
+          
+          else{
+            $( "#confirme_practique" ).prop( "disabled", false );
+            $( "#modifie_practique" ).prop( "disabled", false );
+          }
+
+      });     
+
+  });//end document.ready
+</script>
+<table border="0" cellspacing="0">
+<tr valign="top">
+<td style="padding:0;width:620px;">
+<?php if( isset($sections_status['evaluation']) && $sections_status['evaluation'] ) { ?>  
+<div class="program_eval" style="padding:5px 0 0 10px;">
+    <h2>
+     Immunothérapie allergénique : <br>Une mise à jour pour les médecins de soins primaires
+    </h2>
+    <h2>Évaluation du programme 
+    </h2>
+    <h3>
+      Merci pour évaluer ce programme.
+    </h3>
+</div>
+<?php } else { ?>
+<form class="jotform-form" action="" method="post" data-ajax="false" name="AIT-program-evaluation" id="AIT-program-evaluation" accept-charset="utf-8">
+  <div class="program_eval" style="width:620px;">
+    <ul class="form-section">
+      <li class="form-line"  style="margin:0;padding-top:0;padding-bottom:10px;">
+        <div  style="margin:0;">
+          <div class="form-html" style="padding:0;">
+              <h2>
+             Immunothérapie allergénique : <br>Une mise à jour pour les médecins de soins primaires
+            </h2>
+             <h2>Évaluation du programme </h2>
+             <h3>
+             Veuillez indiquer votre degré de satisfaction vis-à-vis des énoncés ci-dessous en utilisant l’échelle suivante :
+            </h3>
+            <h3>A = Excellent  B = Bon  C = Passable  D = Mauvais
+            </h3>
+          </div>
+          <hr />
+        </div>
+        <div class="parsley-container evaluation backend" style="display:none;"> </div>
+      </li>
+      <li class="form-line" id="id_1matrix">
+        <div id="cid_evaluation" class="form-input-wide">
+          <div class="form-single-column">
+          <table summary="" cellpadding="4" cellspacing="0" class="form-matrix-table">
+            <tr>
+              <th style="border:none">
+                &nbsp;
+              </th>
+              <th class="form-matrix-column-headers french form-matrix-column_0">
+                A
+              </th>
+              <th class="form-matrix-column-headers french form-matrix-column_1">
+                B
+              </th>
+              <th class="form-matrix-column-headers french form-matrix-column_2">
+                C
+              </th>
+              <th class="form-matrix-column-headers french form-matrix-column_3">
+                D
+              </th>
+            </tr>
+            <tr>
+              <th align="left" class="form-matrix-row-headers">
+                Pertinence du contenu
+              </th>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio" id="input_1_eval_A" name="AIT_FR_E_1" value="Excellent" />
+              </td>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio" id="input_1_eval_B" name="AIT_FR_E_1" value="Bon" />
+              </td>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio" id="input_1_eval_C" name="AIT_FR_E_1" value="Passable" />
+              </td>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio" id="input_1_eval_D" name="AIT_FR_E_1" value="Mauvais" />
+              </td>
+            </tr>
+            <tr>
+              <th align="left" class="form-matrix-row-headers">
+                Atteinte des objectifs
+              </th>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio"  id="input_2_eval_A" name="AIT_FR_E_2" value="Excellent" />
+              </td>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio"  id="input_2_eval_B" name="AIT_FR_E_2" value="Bon" />
+              </td>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio"  id="input_2_eval_C" name="AIT_FR_E_2" value="Passable" />
+              </td>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio"  id="input_2_eval_D" name="AIT_FR_E_2" value="Mauvais" />
+              </td>
+            </tr>
+            <tr>
+              <th align="left" class="form-matrix-row-headers">
+                Clarté de la présentation
+              </th>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio"  id="input_3_eval_A" name="AIT_FR_E_3" value="Excellent" />
+              </td>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio"  id="input_3_eval_B" name="AIT_FR_E_3" value="Bon" />
+              </td>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio"  id="input_3_eval_C" name="AIT_FR_E_3" value="Passable" />
+              </td>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio"  id="input_3_eval_D" name="AIT_FR_E_3" value="Mauvais" />
+              </td>
+            </tr>
+            <tr>
+              <th align="left" class="form-matrix-row-headers">
+                Interaction
+              </th>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio"  id="input_4_eval_A" name="AIT_FR_E_4" value="Excellent" />
+              </td>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio" id="input_4_eval_B" name="AIT_FR_E_4" value="Bon" />
+              </td>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio" id="input_4_eval_C" name="AIT_FR_E_4" value="Passable" />
+              </td>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio" id="input_4_eval_D" name="AIT_FR_E_4" value="Mauvais" />
+              </td>
+            </tr>
+            <tr>
+              <th align="left" class="form-matrix-row-headers">
+                Documentation
+              </th>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio" id="input_5_eval_A" name="AIT_FR_E_5" value="Excellent" />
+              </td>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio" id="input_5_eval_B" name="AIT_FR_E_5" value="Bon" />
+              </td>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio" id="input_5_eval_C" name="AIT_FR_E_5" value="Passable" />
+              </td>
+              <td align="center" class="form-matrix-values">
+                <input class="form-radio" type="radio" id="input_5_eval_D" name="AIT_FR_E_5" value="Mauvais" />
+              </td>
+            </tr>
+          </table>
+          </div>
+        </div>
+      </li>
+      <li class="form-line" id="program_q_1">
+        <div id="cid_evaluation2" class="form-input-wide">
+          <table summary="" cellpadding="4" cellspacing="0" class="form-matrix-table biais_table">
+            <tr>
+              <th style="border:none" >
+                &nbsp;
+              </th>
+              <th class="form-matrix-column-headers title-row">
+               Oui
+              </th>
+              <th class="form-matrix-column-headers title-row">
+                Non
+              </th>
+            </tr>
+            <tr>
+              <th align="left" class="form-matrix-row-headers">
+                Présence de biais commercial
+              </th>
+              <td align="center" class="form-matrix-values pretest-col">
+                <input class="form-checkbox" type="checkbox" name="AIT_FR_E_6" id="biais_oui" value="oui" />
+              </td>
+              <td align="center" class="form-matrix-values pretest-col">
+                <input class="form-checkbox" type="checkbox" name="AIT_FR_E_6" id="biais_non" value="non" />
+              </td>
+            </tr>
+          </table>
+        </div>
+      </li>
+      <li class="form-line" id="program_q_2">
+        <label class="form-label-top eval_label" for="eval_q_2"> Présence de biais commercial, précisez : </label>
+        <div id="cid_2_Evaluation" class="form-input-wide">
+                <textarea id="eval_q_2" class="form-textarea" parsley-error-message="Veuillez entrer 500 caractères maximum" parsley-maxlength="500"  name="biais" rows="3"></textarea>
+                <div class="eval_q_2 form-textarea-limit-indicator evaluation">500 caractères maximum </div>
+        </div>
+      </li>
+      <li class="form-line" id="program_q_3">
+        <div id="cid_3_Evaluation" class="form-input-wide">
+          <table summary="" cellpadding="4" cellspacing="0" class="form-matrix-table">
+            <tr>
+              <th style="border:none" >
+                &nbsp;
+              </th>
+              <th class="form-matrix-column-headers title-row">
+               Je l’ignore
+              </th>
+              <th class="form-matrix-column-headers title-row">
+                Oui
+              </th>
+              <th class="form-matrix-column-headers title-row">
+                Non
+              </th>
+            </tr>
+            <tr>
+              <th align="left" class="form-matrix-row-headers">
+                L’activité respectait le code d’éthique des intervenants en ÉMC : (Ce code d’éthique peut être consulté sur le site Web <a href="http://www.cemcq.qc.ca/fr/index.cfm" target="_blank"><span class="accred_reqs">www.cqdpcm.ca</span></a> )
+              </th>
+              <td align="center" class="form-matrix-values pretest-col">
+                <input class="form-checkbox" type="checkbox" name="AIT_FR_E_7" id="ethique_ignore" value="je l'ignore" />
+              </td>
+              <td align="center" class="form-matrix-values pretest-col">
+                <input class="form-checkbox" type="checkbox" name="AIT_FR_E_7" id="ethique_oui" value="oui" />
+              </td>
+              <td align="center" class="form-matrix-values pretest-col">
+                <input class="form-checkbox" type="checkbox" name="AIT_FR_E_7" id="ethique_non" value="non" />
+              </td>
+            </tr>
+          </table>
+        </div>
+      </li>
+      <li class="form-line" id="program_q_4">
+        <label class="form-label-top eval_label" for="eval_q_4">Si non, précisez : </label>
+        <div id="cid_4_Evaluation" class="form-input-wide">
+                <textarea id="eval_q_4" class="form-textarea" parsley-error-message="Veuillez entrer 500 caractères maximum" parsley-maxlength="500" name="code_ethique" rows="3" ></textarea>
+                <div class="eval_q_4 form-textarea-limit-indicator evaluation">500 caractères maximum </div>
+        </div>
+      </li>
+      <li class="form-line" id="program_q_5">
+        <div id="cid_5_Evaluation" class="form-input-wide">
+          <table summary="" cellpadding="4" cellspacing="0" class="form-matrix-table activite_table">
+            <tr>
+              <th align="left" class="form-matrix-row-headers">
+                L’activité confirme ma pratique
+              </th>
+              <td align="center" class="form-matrix-values pretest-col">
+                <input class="form-checkbox" type="checkbox" name="AIT_FR_E_8" id="confirme_practique" value="confirme" />
+              </td>
+            </tr>
+            <tr>
+              <th align="left" class="form-matrix-row-headers">
+                L’activité modifie ma pratique 
+              </th>
+              <td align="center" class="form-matrix-values pretest-col">
+                <input class="form-checkbox" type="checkbox" name="AIT_FR_E_9" id="modifie_practique" value="modifie" />
+              </td>
+            </tr>
+          </table>
+        </div>
+      </li>
+      <li class="form-line" id="program_q_6">
+        <label class="form-label-top eval_label" for="eval_q_6"> Autres besoins de formation ressentis :</label>
+        <div id="cid_6_Evaluation" class="form-input-wide">
+                <textarea id="eval_q_6" class="form-textarea" parsley-error-message="Veuillez entrer 500 caractères maximum" parsley-maxlength="500" name="AIT_FR_E_10" rows="3" ></textarea>
+                <div class="eval_q_6 form-textarea-limit-indicator evaluation">500 caractères maximum </div>
+        </div>
+      </li>
+      <li class="form-line" id="program_q_8">
+        <label class="form-label-top eval_label" for="eval_q_8"> Nom et numéro de permis :</label>
+        <div id="cid_8_Evaluation" class="form-input-wide">
+                <textarea id="eval_q_8" class="form-textarea" parsley-error-message="Veuillez entrer 500 caractères maximum" parsley-maxlength="500" name="AIT_FR_E_11" rows="3" ></textarea>
+                <div class="eval_q_8 form-textarea-limit-indicator evaluation">500 caractères maximum </div>
+        </div>
+      </li>
+      <li class="form-line" id="program_q_9">
+        <label class="form-label-top eval_label" for="eval_q_9"> Champ d’intérêt :</label>
+        <div id="cid_9_Evaluation" class="form-input-wide">
+                <textarea id="eval_q_9" class="form-textarea" parsley-error-message="Veuillez entrer 500 caractères maximum" parsley-maxlength="500" name="AIT_FR_E_12" rows="3" ></textarea>
+                <div class="eval_q_9 form-textarea-limit-indicator evaluation">500 caractères maximum </div>
+        </div>
+      </li>
+      <li id="eval_actions">
+        <div id="cid_eval_actions" >
+          <div style="padding:0 10px 0 10px;" class="form-buttons-wrapper">
+            <button id="submit_evaluation" type="submit" class="big-form-button">Soumettre</button>
+            <button id="reset_eval_form" type="reset" class="form-submit-reset big-form-button">Effacer le formulaire</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</form>
+<?php }//Close else tag ?>
+</td>
+    <td style="padding:0 10px 0 10px;">
+      <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="tab9" id="prev_post_test_section"/>
+    </td>
+    <td style="padding: 0;">
+      <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="tab11" id="next_accreditation_section"/>
+    </td>
+  </tr>
+</table>

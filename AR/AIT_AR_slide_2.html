@@ -1,0 +1,69 @@
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+    if (bowser.msie) {
+       var width = 'width';
+       var height = 'height';
+    }
+    else{
+          var width = 'innerWidth';
+          var height = 'innerHeight';
+    }
+
+    $( "#prev_AR_slide, #next_AR_slide" ).click(function() {
+        var page = ( $(this).attr( "id" ) === "prev_AR_slide" ) ? 4 : 6;
+        $( "span.count" ).empty().html(page + "/66" );
+        (page === 6) ? $( "span#ARslide_no" ).text(page) : $( "span#ARslide_no" ).empty();
+        
+        target = $(this).attr( "alt" );
+        target = "../../programs/AIT/AR/" + target;
+
+        /* make an ajax call to retrieve next slide */
+        $.ajax(
+          {url:target,
+            cache: false,
+            type: "GET",
+            dataType: "html"
+          }) 
+
+        .done(function( data ) {
+              $( "#AR_section" ).empty();
+              $( "#AR_section" ).html( data );
+        })
+         .fail(function() {
+             var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+            $( "#AR_section" ).html( no_data );
+        });
+        
+    });
+
+    $( "#AR_slide1" ).click(function() {
+
+          window.open('https://dxlink.ca/fr/programs/AIT/images/Slide02_large.jpg','_blank','' + width + '=750px,' + height + '=563px,menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no');
+    });
+
+  });//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+      
+          <div style="padding0;margin0;">
+            
+              <span class="subTitle">Physiopathologie de l’inflammation allergique : maladie <br/>clinique</span></br>
+                <p style="padding-top:10px;"> <span class="thumb-screen two-line-spaced" id="AR_slide1"></span><img style="float:right; margin: 0px 0px 10px 25px;cursor: pointer;" src="images/Slide02_small.jpg" width="200" height="150"/>Cette diapositive présente une représentation schématique simplifiée de l’évolution naturelle de la rhinite allergique. Elle illustre plus précisément la phase 2 (maladie clinique); la phase 1 n’est pas illustrée (sensibilisation).</p>
+                <p> La réponse précoce est principalement régie par l’activation des mastocytes et par la libération des médiateurs. Après la réponse précoce, la plupart des patients présentent une infiltration cellulaire de la muqueuse nasale causant des événements inflammatoires tardifs, y compris une récidive spontanée de la libération des médiateurs (réaction de phase tardive), une hyperréactivité aux irritants et une réponse accrue aux allergènes (amorçage). L’inflammation peut disparaître spontanément, causer une complication ou évoluer, dans certains cas, vers une forme irréversible de rhinite chronique. </p>
+                </br>
+                <p class="info_reference">Référence :</br> Naclerio R.M., " Allergic rhinitis ", N Engl J Med, 1991; 325(12):860-9.</p>
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_AR_slide_1.html" id="prev_AR_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="AIT_AR_slide_3.html" id="next_AR_slide"/>
+        </td>
+    </tr> 
+    </table>
+</div>

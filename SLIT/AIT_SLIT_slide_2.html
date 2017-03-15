@@ -1,0 +1,52 @@
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+    $( "#prev_SLIT_slide, #next_SLIT_slide" ).click(function() {
+        var page = ( $(this).attr( "id" ) === "prev_SLIT_slide" ) ? 22 : 24;
+        $( "span.count" ).empty().html(page + "/66" );
+        (page === 25) ? $( "span#SLITslide_no" ).text(page) : $( "span#SLITslide_no" ).empty();
+        
+        target = $(this).attr( "alt" );
+        target = "../../programs/AIT/SLIT/" + target;
+
+        /* make an ajax call to retrieve next slide */
+        $.ajax(
+          {url:target,
+            cache: false,
+            type: "GET",
+            dataType: "html"
+          }) 
+
+        .done(function( data ) {
+              $( "#SLIT_section" ).empty();
+              $( "#SLIT_section" ).html( data );
+        })
+         .fail(function() {
+             var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+            $( "#SLIT_section" ).html( no_data );
+        });
+        
+    });
+
+  });//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+      
+          <div style="padding0;margin0;">
+              <span class="subTitle">Raison d’être du traitement avec le C-ITSL contre l’allergie au pollen des graminées</span></br>
+                <p style="padding-top:10px;"> Il existe plusieurs facteurs appuyant le rôle de l’immunothérapie spécifique par le C-ITSL chez les patients souffrant d’allergie au pollen de graminées. Plus particulièrement dans le cas du traitement de la rhinoconjonctivite allergique, le C-ITSL composé d’un extrait allergénique de pollen de graminées peut réduire les symptômes pendant la première saison des allergies au pollen et le besoin de recourir à un traitement pharmacologique, et il est sécuritaire pour une auto-administration. De plus, le C-ITSL contre l’allergie au pollen des graminées procure une efficacité soutenue pendant le traitement ainsi qu’un effet modificateur de l’évolution de la maladie, et il prévient l’évolution de la maladie après le traitement.
+                </p>
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_SLIT_slide_1.html" id="prev_SLIT_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="AIT_SLIT_slide_3.html" id="next_SLIT_slide"/>
+        </td>
+    </tr> 
+    </table>
+</div>

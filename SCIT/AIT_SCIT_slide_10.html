@@ -1,0 +1,73 @@
+<script type="text/javascript">
+$(document).ready(function () {
+
+    if (bowser.msie) {
+       var width = 'width';
+       var height = 'height';
+    }
+    else{
+        var width = 'innerWidth';
+        var height = 'innerHeight';
+    }
+
+    $( "#prev_SCIT_slide, #next_SLIT_section" ).click(function() {
+
+        target = $(this).attr( "alt" );
+
+        if (target === "tab6"){
+          window.parent.showTab(target);
+        }
+
+        else{
+            $( "span.count" ).empty().html("20/66" );
+            $( "span#SCITslide_no" ).text('20');
+
+            target = "../../programs/AIT/SCIT/" + target;
+
+            /* make an ajax call to retrieve next slide */
+            $.ajax(
+              {url:target,
+                cache: false,
+                type: "GET",
+                dataType: "html"
+              }) 
+
+            .done(function( data ) {
+                  $( "#SCIT_section" ).empty();
+                  $( "#SCIT_section" ).html( data );
+            })
+             .fail(function() {
+                 var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+                $( "#SCIT_section" ).html( no_data );
+            });
+        }
+        
+    });
+
+    $( "#SCIT_slide1" ).click(function() {
+        window.open('https://dxlink.ca/fr/programs/AIT/images/Slide14_large.jpg','_blank','' + width + '=750px,' + height + '=563px,menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no');
+    });
+
+});//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+          <div style="padding0;margin0;">
+              <span class="subTitle">Délai avant l’apparition de réactions allergiques générales avec une immunothérapie allergénique</span><br/>
+                <p style="padding-top:10px;"> <span class="thumb-screen two-line-spaced" id="SCIT_slide1"></span><img style="float:right; margin: 0px 0px 10px 25px;cursor: pointer;" src="images/Slide14_small.jpg" width="200" height="150"/>Tel que revu par Greineder en 1996, les réactions anaphylactiques générales sont le principal risque associé à l’immunothérapie allergénique. La fréquence des réactions générales rapportées après une immunothérapie allergénique varie entre moins de 1 % chez les patients recevant une immunothérapie classique et plus de 36 % chez ceux recevant une immunothérapie d’urgence. Les caractéristiques des réactions fatales et générales associées à l’immunothérapie allergénique sont similaires. </p>
+                <p> Tel qu’illustré dans ce graphique, les réactions générales se manifestent moins de 30 minutes après l’injection chez environ 70 % des patients. Certaines précautions sont recommandées pendant une immunothérapie allergénique, et des interventions comme une prémédication composée d’antihistaminiques ou de corticostéroïdes, l’évaluation du débit de pointe avant l’injection et l’accès à un antihistaminique ou à de l’épinéphrine injectable après l’injection d’un allergène ont été suggérées comme mesures pour prévenir les réactions et pour accroître l’innocuité de l’immunothérapie allergénique.</p>
+                <br/>
+                <p class="info_reference">Référence :<br/>Greineder DK. Risk management in allergen immunotherapy. J Allergy Clin Immunol, 1996; <br/>98(6 Pt 3):S330-S334. [Données tirées de Matloff SM, Bailit IW, Parks P, et al. Systemic reactions to immunotherapy. Allergy Proc, 1993; 14(5):347-50.]</p>
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_SCIT_slide_9.html" id="prev_SCIT_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="tab6" id="next_SLIT_section"/>
+        </td>
+    </tr> 
+    </table>
+</div>

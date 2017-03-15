@@ -1,0 +1,64 @@
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+    if (bowser.msie) {
+       var width = 'width';
+       var height = 'height';
+    }
+    else{
+          var width = 'innerWidth';
+          var height = 'innerHeight';
+    }
+
+    $( "#prev_SCIT_slide, #next_SCIT_slide" ).click(function() {
+        var page = ( $(this).attr( "id" ) === "prev_SCIT_slide" ) ? 18 : 20;
+        $( "span.count" ).empty().html(page + "/66" );
+        $( "span#SCITslide_no" ).text(page);
+        
+        target = $(this).attr( "alt" );
+        target = "../../programs/AIT/SCIT/" + target;
+
+        /* make an ajax call to retrieve next slide */
+        $.ajax(
+          {url:target,
+            cache: false,
+            type: "GET",
+            dataType: "html"
+          }) 
+
+        .done(function( data ) {
+              $( "#SCIT_section" ).empty();
+              $( "#SCIT_section" ).html( data );
+        })
+         .fail(function() {
+             var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+            $( "#SCIT_section" ).html( no_data );
+        });
+        
+    });
+
+    $( "#SCIT_slide1" ).click(function() {
+          window.open('https://dxlink.ca/fr/programs/AIT/images/Slide12_large.jpg','_blank','' + width + '=750px,' + height + '=563px,menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no');
+    });
+
+  });//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+          <div style="padding0;margin0;">
+              <span class="subTitle">Administration d’une IT sous-cutanée</span><br/>
+                <p style="padding-top:10px;"> <span class="thumb-screen" id="SCIT_slide1"></span><img style="float:right; margin: 0px 0px 10px 25px;cursor: pointer;" src="images/Slide12_small.jpg" width="200" height="150"/>L’immunothérapie sous-cutanée se caractérise par l’injection d’extraits allergéniques commerciaux au moyen de seringues hypodermiques de petite taille. </p>
+                <p> Les injections sont généralement administrées dans le tissu lâche à l’arrière de la partie supérieure du bras, à mi-chemin entre l’épaule et le coude. </p>
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_SCIT_slide_7.html" id="prev_SCIT_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="AIT_SCIT_slide_9.html" id="next_SCIT_slide"/>
+        </td>
+    </tr> 
+    </table>
+</div>

@@ -1,0 +1,58 @@
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+    $( "#prev_AFP_slide, #next_forum_section" ).click(function() {
+
+        target = $(this).attr( "alt" );
+
+        if (target === "tab8"){
+          window.parent.showTab(target);
+        }
+
+        else
+        {
+            $( "span.count" ).empty().html("61/66" );
+            $( "span#AFPslide_no" ).text('61');
+            target = "../../programs/AIT/AFP/" + target;
+
+            /* make an ajax call to retrieve next slide */
+            $.ajax(
+              {url:target,
+                cache: false,
+                type: "GET",
+                dataType: "html"
+              }) 
+
+            .done(function( data ) {
+                  $( "#AFP_section" ).empty();
+                  $( "#AFP_section" ).html( data );
+            })
+             .fail(function() {
+                 var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+                $( "#AFP_section" ).html( no_data );
+            });
+         }
+    });
+
+  });//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+          <div style="padding0;margin0;">
+              <span class="subTitle">Étude de cas 3 : Discussion</span><br/>
+                <p style="padding-top:10px;"> La première question à envisager dans ce cas porte sur les options thérapeutiques en présence de symptôme graves. Des options thérapeutiques qui sont, encore une fois, présentées étape par étape dans l’algorithme de traitement de la RA élaboré par les récentes lignes directrices canadiennes. (Diapositives 11 et 62) </p>
+                <p>Il convient aussi de se pencher sur les autres tests à effectuer ainsi que sur le rôle de l’allergologue. En définitive, le meilleur moment pour diriger le patient vers un allergologue est un aspect additionnel à ne pas négliger; des symptômes non complètement soulagés par le traitement à l’immunothérapie, en passant par l’identification des déclencheurs spécifiques, certaines raisons font en sorte que le recours à la consultation auprès d’un l’allergologue est primordial (diapositive 61). </p>
+                <p> Les réponses à ces questions peuvent être trouvées, entre autres, parmi les diapositives 11, 61 et 62. Ces questions sont aussi incluses dans la section « Forum de discussion » que nous vous invitons à consulter afin d'obtenir des informations supplémentaires. </p>
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_AFP_slide_10.html" id="prev_AFP_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="tab8" id="next_forum_section"/>
+        </td>
+    </tr> 
+    </table>
+</div>

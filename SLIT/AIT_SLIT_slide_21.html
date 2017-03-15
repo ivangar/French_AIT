@@ -1,0 +1,66 @@
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+    if (bowser.msie) {
+       var width = 'width';
+       var height = 'height';
+    }
+    else{
+        var width = 'innerWidth';
+        var height = 'innerHeight';
+    }
+
+    $( "#prev_SLIT_slide, #next_SLIT_slide" ).click(function() {
+        var page = ( $(this).attr( "id" ) === "prev_SLIT_slide" ) ? 41 : 43;
+        $( "span.count" ).empty().html(page + "/66" );
+        $( "span#SLITslide_no" ).text(page);
+        
+        target = $(this).attr( "alt" );
+        target = "../../programs/AIT/SLIT/" + target;
+
+        /* make an ajax call to retrieve next slide */
+        $.ajax(
+          {url:target,
+            cache: false,
+            type: "GET",
+            dataType: "html"
+          }) 
+
+        .done(function( data ) {
+              $( "#SLIT_section" ).empty();
+              $( "#SLIT_section" ).html( data );
+        })
+         .fail(function() {
+             var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+            $( "#SLIT_section" ).html( no_data );
+        });
+        
+    });
+
+    $( "#SLIT_Slide35" ).click(function() {
+          window.open('https://dxlink.ca/fr/programs/AIT/images/Slide35_large.jpg','_blank','' + width + '=750px,' + height + '=563px,menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no');
+    });
+
+  });//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+      
+          <div style="padding0;margin0;">
+              <span class="subTitle">Principal paramètre d’efficacité Indice des symptômes quotidiens (ITSR) </span></br>
+                <p style="padding-top:10px;"> <span class="thumb-screen two-line-spaced" id="SLIT_Slide35"></span><img style="float:right; margin: 0px 0px 10px 25px;cursor: pointer;" src="images/Slide35_small.jpg" width="200" height="150"/>Les doses 300 IR (indice de réactivité) et 500 IR ont réduit de façon significative l’indice total des symptômes de la rhinoconjonctivite moyen (3,58 +/- 3,0, p = 0,0001; et 3,74 +/- 3,1, p = 0,0006, respectivement) par rapport au placebo (4,93 +/- 3,2) dans les populations en intention de traiter et évaluables selon le protocole. L’indice du groupe recevant la dose 100 IR (4,70 +/- 3,1) n’a pas présenté de différence significative par rapport à celui du groupe placebo.  </p>
+                </br>
+                <p class="info_reference">Référence :</br>Didier A, Malling HJ, Worm M, et al. Optimal dose, efficacy and safety of once-daily sublingual immunotherapy with a 5-grass pollen tablet for seasonal allergic rhinitis. J Allergy Clin Immunol, 2007; 120(6):1338-1345.</p>                      
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_SLIT_slide_20.html" id="prev_SLIT_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="AIT_SLIT_slide_22.html" id="next_SLIT_slide"/>
+        </td>
+    </tr> 
+    </table>
+</div>

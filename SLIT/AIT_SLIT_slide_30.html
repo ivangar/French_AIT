@@ -1,0 +1,72 @@
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+    if (bowser.msie) {
+       var width = 'width';
+       var height = 'height';
+    }
+    else{
+        var width = 'innerWidth';
+        var height = 'innerHeight';
+    }
+
+    $( "#prev_SLIT_slide, #next_AFP_section" ).click(function() {
+
+        target = $(this).attr( "alt" );
+
+        if (target === "tab7"){
+          window.parent.showTab(target);
+        }
+
+        else
+        {
+            $( "span.count" ).empty().html("50/66" );
+            $( "span#SLITslide_no" ).text('50');
+
+            target = "../../programs/AIT/SLIT/" + target;
+
+            /* make an ajax call to retrieve next slide */
+            $.ajax(
+              {url:target,
+                cache: false,
+                type: "GET",
+                dataType: "html"
+              }) 
+
+            .done(function( data ) {
+                  $( "#SLIT_section" ).empty();
+                  $( "#SLIT_section" ).html( data );
+            })
+             .fail(function() {
+                 var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+                $( "#SLIT_section" ).html( no_data );
+            });
+        }
+        
+    });
+
+    $( "#SLIT_Slide44" ).click(function() {
+          window.open('https://dxlink.ca/fr/programs/AIT/images/Slide44_large.jpg','_blank','' + width + '=750px,' + height + '=563px,menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no');
+    });
+
+  });//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+      
+          <div style="padding0;margin0;">
+              <span class="subTitle">Durée des effets indésirables prévus</span></br>
+                <p style="padding-top:10px;"> <span class="thumb-screen" id="SLIT_Slide44"></span><img style="float:right; margin: 0px 0px 10px 25px;cursor: pointer;" src="images/Slide44_small.jpg" width="200" height="150"/>Les réactions défavorables prévues avec le C-ITSL se manifestent généralement après l’administration des premières doses du médicament, puis elles diminuent avec le temps et avec la poursuite du traitement. Ce tableau montre la durée habituelle de ces réactions lorsqu’elles surviennent. </p>
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_SLIT_slide_29.html" id="prev_SLIT_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="tab7" id="next_AFP_section"/>
+        </td>
+    </tr> 
+    </table>
+</div>

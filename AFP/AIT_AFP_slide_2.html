@@ -1,0 +1,68 @@
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+    if (bowser.msie) {
+       var width = 'width';
+       var height = 'height';
+    }
+    else{
+        var width = 'innerWidth';
+        var height = 'innerHeight';
+    }
+
+    $( "#prev_AFP_slide, #next_AFP_slide" ).click(function() {
+        var page = ( $(this).attr( "id" ) === "prev_AFP_slide" ) ? 52 : 54;
+        $( "span.count" ).empty().html(page + "/66" );
+        (page === 54) ? $( "span#AFPslide_no" ).text(page) : $( "span#AFPslide_no" ).empty();
+
+        target = $(this).attr( "alt" );
+        target = "../../programs/AIT/AFP/" + target;
+
+            /* make an ajax call to retrieve next slide */
+            $.ajax(
+              {url:target,
+                cache: false,
+                type: "GET",
+                dataType: "html"
+              }) 
+
+            .done(function( data ) {
+                  $( "#AFP_section" ).empty();
+                  $( "#AFP_section" ).html( data );
+            })
+             .fail(function() {
+                 var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+                $( "#AFP_section" ).html( no_data );
+            });
+        
+    });
+
+    $( "#SLIT_slide1" ).click(function() {
+          window.open('https://dxlink.ca/fr/programs/AIT/images/Slide46_large.jpg','_blank','' + width + '=750px,' + height + '=563px,menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no');
+    });
+
+  });//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+          <div style="padding0;margin0;">
+              <span class="subTitle">Lignes directrices pour le traitement de la RA</span><br/>
+                <p style="padding-top:10px;"> <span class="thumb-screen" id="SLIT_slide1"></span><img style="float:right; margin: 0px 0px 10px 25px;cursor: pointer;" src="images/Slide46_small.jpg" width="200" height="150"/>Les lignes directrices canadiennes émises récemment fournissent un algorithme de traitement utile pour les cas de RA. Dans ce diagramme, les démarches thérapeutiques recommandées sont présentées progressivement, de bas en haut. Quelle que soit l’intensité de la RA, lorsque l’intervention amorcée ne produit aucune réponse ou qu’une réponse partielle, il faut poursuivre avec la prochaine étape. </p>
+                <p> Prenons l’exemple de la RA de classe I. La première étape recommandée est l’évitement de l’allergène ou de l’irritant. Si cette démarche ne suffit pas à maîtriser les symptômes d’allergie, on peut se tourner vers un antihistaminique sans somnolence à prise orale.</p>
+                <p> L’étape suivant l’échec ou l’insuffisance des antihistaminiques est la prise de corticostéroïdes pour administration nasale. Les antagonistes des récepteurs des leucotriènes représentent l’étape suivante. S’ils ne parviennent pas à donner les résultats attendus, il faut envisager le recours aux corticostéroïdes oraux, mais les données étayant le bien-fondé de cette démarche sont limitées. Lorsque toutes les démarches précédentes sont vaines, l’immunothérapie pourrait être la solution. </p>
+                 <p>Des données limitées appuient l’emploi des antagonistes des récepteurs des leucotriènes dans le traitement de la RA de classe III et IV ou comme traitement d’appoint aux corticostéroïdes oraux dans le traitement de la RA de classe II; aucune donnée n’appuie l’administration des corticostéroïdes oraux dans le traitement de la RA de classe III. Si l’immunothérapie échoue, l’intervention chirurgicale peut être une option.</p>
+                <br/>
+                <p class="info_reference">Référence :<br/> Small P, Frenkiel S, Becker A, et al. Rhinitis: A practical and comprehensive approach to assessment and therapy. J Otolaryngol, 2007; 36(suppl 1):S5-S27.</p>
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_AFP_slide_1.html" id="prev_AFP_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="AIT_AFP_slide_3.html" id="next_AFP_slide"/>
+        </td>
+    </tr> 
+    </table>
+</div>

@@ -1,0 +1,71 @@
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+    if (bowser.msie) {
+       var width = 'width';
+       var height = 'height';
+    }
+    else{
+        var width = 'innerWidth';
+        var height = 'innerHeight';
+    }
+
+    $( "#prev_SLIT_slide, #next_SLIT_slide" ).click(function() {
+        var page = ( $(this).attr( "id" ) === "prev_SLIT_slide" ) ? 24 : 26;
+        $( "span.count" ).empty().html(page + "/66" );
+        $( "span#SLITslide_no" ).text(page);
+        
+        target = $(this).attr( "alt" );
+        target = "../../programs/AIT/SLIT/" + target;
+
+        /* make an ajax call to retrieve next slide */
+        $.ajax(
+          {url:target,
+            cache: false,
+            type: "GET",
+            dataType: "html"
+          }) 
+
+        .done(function( data ) {
+              $( "#SLIT_section" ).empty();
+              $( "#SLIT_section" ).html( data );
+        })
+         .fail(function() {
+             var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+            $( "#SLIT_section" ).html( no_data );
+        });
+        
+    });
+
+    $( "#SLIT_slide18" ).click(function() {
+          window.open('https://dxlink.ca/fr/programs/AIT/images/Slide18_large.jpg','_blank','' + width + '=750px,' + height + '=563px,menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no');
+    });
+
+  });//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+      
+          <div style="padding0;margin0;">
+              <span class="subTitle">Voie métabolique de l’allergène et mode d’action du C-ITSL dans la muqueuse buccale et les ganglions lymphatiques locaux</span></br>
+                <p style="padding-top:10px;"> <span class="thumb-screen  three-line-spaced" id="SLIT_slide18"></span><img style="float:right; margin: 0px 0px 10px 25px;cursor: pointer;" src="images/Slide18_small.jpg" width="200" height="150"/>En plus des modes d’action décrits à la diapositive précédente, cette figure montre la voie métabolique de l’allergène et les modes d’action suggérés de l’ITSL au sein de la muqueuse buccale et des ganglions lymphatiques locaux. </p>
+                <p> Dans le schéma A, l’allergène est capté par les cellules de Langerhan buccales (CLb) au sein de l’épithélium sublingual, un phénomène possiblement médié par un récepteur de haute affinité des IgE, soit FcεRI. </p>
+                <p> Dans le schéma B, une fois l’allergène capté, les CLb migrent à travers la sous-muqueuse jusqu’aux vaisseaux lymphatiques assurant le drainage. </p>
+                 <p>Dans le schéma C, on peut voir que dans les ganglions lymphatiques locaux (sous-maxillaires, cervicaux, jugulaires internes), les CLB présentent l’allergène aux lymphocytes T. Les CLb peuvent produire des IL-10 et des TGF-β, et réguler à la hausse de l’IDO (indoléamine 2,3-dioxygénase) pendant l’interaction avec les lymphocytes T. Cela peut mener à la production de lymphocytes T régulateurs et Th1 et à l’inhibition des lymphocytes Th2. </p>
+                 <p>Enfin, dans le schéma D, les lymphocytes T régulateurs favorisent ensuite le remplacement de la classe d’immunoglobuline des lymphocytes B par des IgG4 et des IgA, possiblement par la sécrétion d’IL-10 et de TGF-β, respectivement. Les lymphocytes T régulateurs peuvent inhiber les lymphocytes Th2 par la sécrétion de ces cytokines ou par un contact direct entre les cellules. Les lymphocytes T peuvent ensuite migrer vers la muqueuse effectrice exposée à l’allergène.
+                 </p>
+                </br>
+                <p class="info_reference">Référence :</br> Scadding G, Durham S. Mechanisms of sublingual immunotherapy. J Asthma, 2009; 46(4):322-34.</p>
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_SLIT_slide_3.html" id="prev_SLIT_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="AIT_SLIT_slide_5.html" id="next_SLIT_slide"/>
+        </td>
+    </tr> 
+    </table>
+</div>

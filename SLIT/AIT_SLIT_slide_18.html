@@ -1,0 +1,66 @@
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+    if (bowser.msie) {
+       var width = 'width';
+       var height = 'height';
+    }
+    else{
+        var width = 'innerWidth';
+        var height = 'innerHeight';
+    }
+
+    $( "#prev_SLIT_slide, #next_SLIT_slide" ).click(function() {
+        var page = ( $(this).attr( "id" ) === "prev_SLIT_slide" ) ? 38 : 40;
+        $( "span.count" ).empty().html(page + "/66" );
+        $( "span#SLITslide_no" ).text(page);
+        
+        target = $(this).attr( "alt" );
+        target = "../../programs/AIT/SLIT/" + target;
+
+        /* make an ajax call to retrieve next slide */
+        $.ajax(
+          {url:target,
+            cache: false,
+            type: "GET",
+            dataType: "html"
+          }) 
+
+        .done(function( data ) {
+              $( "#SLIT_section" ).empty();
+              $( "#SLIT_section" ).html( data );
+        })
+         .fail(function() {
+             var no_data = "<table><tr><td> We are sorry, the contents you requested do not exist! </td></tr></table>";
+            $( "#SLIT_section" ).html( no_data );
+        });
+        
+    });
+
+    $( "#SLIT_Slide32" ).click(function() {
+          window.open('https://dxlink.ca/fr/programs/AIT/images/Slide32_large.jpg','_blank','' + width + '=750px,' + height + '=563px,menubar=no,location=yes,resizable=yes,scrollbars=yes,status=no');
+    });
+
+  });//end document.ready
+</script>
+<div class="innerContentFrame">
+   <table style="width:100%;" >
+      <tr valign="top">
+        <td style="vertical-align:top;padding: 0 0 25px 5px; width:595px" >
+      
+          <div style="padding0;margin0;">
+              <span class="subTitle">Événements indésirables survenus en cours de traitement rapportés par au moins 5 % des sujets </span></br>
+                <p style="padding-top:10px;"> <span class="thumb-screen two-line-spaced" id="SLIT_Slide32"></span><img style="float:right; margin: 0px 0px 10px 25px;cursor: pointer;" src="images/Slide32_small.jpg" width="200" height="150"/>Aucun effet indésirable (EI) grave possiblement ou probablement relié au médicament à l’étude n’a été rapporté. Tel qu’illustré, la plupart des événements indésirables le plus souvent rapportés étaient reliés au site d’administration, ce qui montre un lien avec le médicament. D’autres effets courants, comme les maux de tête, la rhinopharyngite et la grippe, ont également été signalés dans les deux groupes. </p>
+                </br>
+                <p class="info_reference">Référence :</br>Dahl R, Kapp A, Colombo G, et al. Efficacy and safety of sublingual immunotherapy with grass allergen tablets for seasonal allergic rhinoconjunctivitis, J Allergy Clin Immunol, 2006; 118(2):434-40.</p>                      
+          </div>
+        </td>
+         <td style="padding:0 10px 0 30px;">
+          <img style="cursor: pointer;" src="../images/prev.jpg" width="28" height="28"  alt="AIT_SLIT_slide_17.html" id="prev_SLIT_slide"/>
+        </td>
+        <td style="padding: 0;">
+          <img style="cursor: pointer;" src="../images/next.jpg" width="28" height="28" alt="AIT_SLIT_slide_19.html" id="next_SLIT_slide"/>
+        </td>
+    </tr> 
+    </table>
+</div>
