@@ -5,7 +5,7 @@
       var evaluationId = <?php if(isset($evaluation_id_fr)) {echo " '$evaluation_id_fr' ";} else echo ''; ?>;  //replace all section ids in the code
       var no_questions = 5;
 
-      $( "#prev_AFP_section, #next_accreditation_section" ).click(function() {
+      $( "#prev_AFP_section" ).click(function() {
           target = $(this).attr( "alt" );
           window.parent.showTab(target);
       });
@@ -70,16 +70,6 @@
                   }
 
                   if (data === "completed"){
-
-                      $.ajax({
-                        url: "ait.php",
-                        cache: false
-                      }).done(function(data) {
-                        console.log('Im done' + data);
-                      }).fail(function(data) {
-                        console.log('Oh snap! Something hapened :(' + data);
-                      });
-
                       $.blockUI({ message: '<img src="images/ajax-loader.gif" width="40" height="40" /> <p>Evaluation du programme en traitement...</p>', 
                                   css: { 
                                   top:  ($(window).height() - 200) /2 + 'px', 
@@ -101,7 +91,7 @@
                           $.unblockUI({ 
                               onUnblock: function(){ document.location.reload(true); } 
                           }); 
-                      }, 3000); 
+                      }, 500); 
                       
                   }
                   
@@ -200,18 +190,7 @@
 <table border="0" cellspacing="0">
 <tr valign="top">
 <td style="padding:0;width:620px;">
-<?php if( isset($sections_status['evaluation']) && $sections_status['evaluation'] ) { ?>  
-<div class="program_eval" style="padding:5px 0 0 10px;">
-    <h2>
-     Immunothérapie allergénique : <br>Une mise à jour pour les médecins de soins primaires
-    </h2>
-    <h2>Évaluation du programme 
-    </h2>
-    <h3>
-      Merci pour évaluer ce programme.
-    </h3>
-</div>
-<?php } else { ?>
+<?php if(isset($_SESSION['section_submitted']) && $_SESSION['section_submitted']) { echo "<div class='program_eval' style='padding:5px 0 0 10px;'><h2>Immunothérapie allergénique : <br>Une mise à jour pour les médecins de soins primaires</h2><h2>Évaluation du programme </h2><h3>Merci pour évaluer ce programme.</h3></div>"; unset($_SESSION['section_submitted']);} else { ?>
 <form class="jotform-form" action="" method="post" data-ajax="false" name="AIT-program-evaluation" id="AIT-program-evaluation" accept-charset="utf-8">
   <div class="program_eval" style="width:620px;">
     <ul class="form-section">
